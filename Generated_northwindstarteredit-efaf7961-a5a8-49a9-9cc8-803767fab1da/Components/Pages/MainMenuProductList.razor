@@ -1,0 +1,190 @@
+@page "/main-menu-product-list"
+@rendermode InteractiveServer
+@implements IAsyncDisposable
+@using System.Text
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@inject IProductService ProductService
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<PageTitle>Main Menu Product List</PageTitle>
+
+<div class="container-fluid py-3 access-form access-main-menu-product-list">
+    <h1 class="page-title mb-3">Products</h1>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="fw-semibold">Product Sales Summary</span>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-outline-primary" tabindex="0" @onclick="ExportCsvAsync" disabled="@(isLoading || !rows.Any())">Export</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" tabindex="1" @onclick="OpenAddProduct">Add Product</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" tabindex="2" @onclick="LoadRowsAsync" disabled="@isLoading">Refresh</button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            @if (isLoading)
+            {
+                <div class="p-3 text-muted">Loading products...</div>
+            }
+            else if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                <div class="alert alert-danger m-3" role="alert">@errorMessage</div>
+            }
+            else if (!rows.Any())
+            {
+                <div class="p-3 text-muted">No products found.</div>
+            }
+            else
+            {
+                <table class="table table-sm table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Product #</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th class="text-end">Unit Price</th>
+                            <th class="text-end">Qty Sold</th>
+                            <th class="text-end">Sold This Week</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in rows)
+                        {
+                            <tr>
+                                <td>@row.ProductID</td>
+                                <td>@row.ProductCode</td>
+                                <td>@row.ProductName</td>
+                                <td>@row.ProductDescription</td>
+                                <td class="text-end">@row.UnitPrice.ToString("C")</td>
+                                <td class="text-end">@row.QtySold</td>
+                                <td class="text-end">@row.SoldThisWeek</td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" tabindex="3" @onclick="() => OpenProduct(row.ProductID)">Open</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+
+        @if (!isLoading && rows.Any())
+        {
+            <div class="card-footer d-flex justify-content-between small text-muted">
+                <span>Total Products: @rows.Count</span>
+                <span>Total Qty Sold: @rows.Sum(x => x.QtySold)</span>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<ProductSalesSummaryDto> rows = new();
+    private bool isLoading = true;
+    private string? errorMessage;
+    private IJSObjectReference? module;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadRowsAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/Pages/MainMenuProductList.razor.js");
+        }
+    }
+
+    private async Task LoadRowsAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            rows = await ProductService.GetProductsAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            rows = new();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void OpenAddProduct()
+    {
+        Navigation.NavigateTo("/product-detail");
+    }
+
+    private void OpenProduct(int productId)
+    {
+        Navigation.NavigateTo($"/product-detail?productId={productId}");
+    }
+
+    private async Task ExportCsvAsync()
+    {
+        if (!rows.Any())
+        {
+            return;
+        }
+
+        module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/Pages/MainMenuProductList.razor.js");
+
+        var csv = BuildCsv(rows);
+        var bytes = Encoding.UTF8.GetBytes(csv);
+        var base64 = Convert.ToBase64String(bytes);
+        var filename = $"products-{DateTime.Now:yyyyMMdd-HHmmss}.csv";
+
+        await module.InvokeVoidAsync("downloadFile", filename, base64);
+    }
+
+    private static string BuildCsv(IEnumerable<ProductSalesSummaryDto> rows)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("ProductID,ProductCode,ProductName,ProductDescription,UnitPrice,QtySold,SoldThisWeek");
+
+        foreach (var row in rows)
+        {
+            sb.AppendLine(string.Join(',',
+                row.ProductID,
+                EscapeCsv(row.ProductCode),
+                EscapeCsv(row.ProductName),
+                EscapeCsv(row.ProductDescription ?? string.Empty),
+                row.UnitPrice,
+                row.QtySold,
+                row.SoldThisWeek));
+        }
+
+        return sb.ToString();
+    }
+
+    private static string EscapeCsv(string value)
+    {
+        var escaped = value.Replace("\"", "\"\"");
+        return $"\"{escaped}\"";
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // Ignore circuit disconnect during disposal.
+            }
+        }
+    }
+}

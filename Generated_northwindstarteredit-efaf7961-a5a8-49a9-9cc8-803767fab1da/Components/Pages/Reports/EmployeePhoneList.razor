@@ -1,0 +1,118 @@
+@page "/reports/employee-phone-list"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@inject IReportService ReportService
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Employee Phone List</PageTitle>
+
+<div class="container-fluid access-report access-employee-phone-list">
+    <div class="row mb-4 report-header-section">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="page-title">
+                    <i class="bi bi-bar-chart-line-fill me-2 text-primary"></i>
+                    Employee Phone List
+                </h1>
+                <p class="page-subtitle">Record Source: qryrptEmployeePhoneList</p>
+            </div>
+            <button class="btn btn-outline-secondary" tabindex="0" @onclick="PrintReport">
+                <i class="bi bi-printer me-1"></i>Print
+            </button>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="text-center py-4">
+            <div class="spinner-border text-primary"></div>
+            <p class="text-muted mt-2">Loading report data...</p>
+        </div>
+    }
+    else if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>@errorMessage
+        </div>
+    }
+    else if (!reportData.Any())
+    {
+        <div class="text-center py-4">
+            <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+            <p class="text-muted">No data available for this report</p>
+        </div>
+    }
+    else
+    {
+        <div class="card report-detail-section">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0 report-table">
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Employee</th>
+                            <th>Primary Phone</th>
+                            <th>Secondary Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in reportData)
+                        {
+                            <tr>
+                                <td>@item.EmployeeID</td>
+                                <td>@item.FullNameFNLN</td>
+                                <td>@item.PrimaryPhone</td>
+                                <td>@item.SecondaryPhone</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-light fw-bold">
+                            <td colspan="3" class="text-end">Total Employees</td>
+                            <td>@recordCount</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-2 text-muted small report-footer-section">Generated: @generatedDate.ToShortDateString() @generatedTime.ToLongTimeString()</div>
+    }
+</div>
+
+@code {
+    private List<EmployeePhoneListDto> reportData = new();
+    private bool isLoading = true;
+    private string? errorMessage;
+    private DateTime generatedDate = DateTime.Today;
+    private DateTime generatedTime = DateTime.Now;
+    private int recordCount;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            reportData = await ReportService.GetEmployeePhoneListAsync();
+            reportData = reportData
+                .OrderBy(x => x.FullNameFNLN)
+                .ToList();
+
+            recordCount = reportData.Count;
+            generatedDate = DateTime.Today;
+            generatedTime = DateTime.Now;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task PrintReport()
+    {
+        await JSRuntime.InvokeVoidAsync("window.print");
+    }
+}

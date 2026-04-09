@@ -1,0 +1,31 @@
+:host {
+    display: block;
+}
+
+.access-form.access-order-details {
+    --access-form-bg: rgb(242, 242, 242);
+    --access-form-text: rgb(64, 64, 64);
+    --access-border: rgb(231, 231, 231);
+    max-width: 12.75in;
+    margin: 0 auto;
+    font-family: Calibri, "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-form-text);
+}
+
+.access-form.access-order-details :deep(.card),
+.access-form.access-order-details :deep(.card-header),
+.access-form.access-order-details :deep(.card-body),
+.access-form.access-order-details :deep(.card-footer) {
+    border-color: var(--access-border);
+}
+
+.access-form.access-order-details :deep(.card-header),
+.access-form.access-order-details :deep(.card-body) {
+    background-color: var(--access-form-bg);
+}
+
+.access-form.access-order-details :deep(.form-control),
+.access-form.access-order-details :deep(.form-select) {
+    width: 100%;
+}

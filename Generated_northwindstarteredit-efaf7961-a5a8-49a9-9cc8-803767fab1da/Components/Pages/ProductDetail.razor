@@ -1,0 +1,268 @@
+@page "/product-detail"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Components.Forms
+@inject IProductService ProductService
+@inject IJSRuntime JS
+
+<PageTitle>Product Detail</PageTitle>
+
+<div class="container-fluid py-3 access-form access-product-detail">
+    <h1 class="page-title mb-3">Product Detail</h1>
+
+    <div class="card mb-3">
+        <div class="card-body row g-3 align-items-end">
+            <div class="col-md-6">
+                <label class="form-label" for="product-selector">Product</label>
+                <select id="product-selector" class="form-select" tabindex="0" value="@selectedProductId" @onchange="OnProductSelectionChanged">
+                    <option value="0">-- Select Product --</option>
+                    @foreach (var row in productRows)
+                    {
+                        <option value="@row.ProductID">@row.ProductCode - @row.ProductName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6 d-flex gap-2">
+                <button type="button" class="btn btn-outline-primary" tabindex="1" @onclick="StartNewProduct">Add Product</button>
+                <button type="button" class="btn btn-outline-secondary" tabindex="2" @onclick="LoadProductsAsync" disabled="@isLoading">Refresh List</button>
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(statusMessage))
+    {
+        <div class="alert alert-info" role="alert">@statusMessage</div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">@errorMessage</div>
+    }
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <EditForm Model="editModel" OnValidSubmit="SaveProductAsync">
+                <DataAnnotationsValidator />
+
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        <label class="form-label">Product ID</label>
+                        <input class="form-control" value="@(editModel.ProductID == 0 ? "(new)" : editModel.ProductID)" readonly tabindex="-1" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Product Code</label>
+                        <InputText class="form-control" tabindex="3" @bind-Value="editModel.ProductCode" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Product Name</label>
+                        <InputText class="form-control" tabindex="4" @bind-Value="editModel.ProductName" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Unit Price</label>
+                        <InputNumber TValue="decimal" class="form-control" tabindex="5" @bind-Value="editModel.UnitPrice" />
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Description</label>
+                        <InputTextArea class="form-control" tabindex="6" @bind-Value="editModel.ProductDescription" />
+                    </div>
+                </div>
+
+                <div class="mt-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary" tabindex="7" disabled="@isSaving">Save</button>
+                    <button type="button" class="btn btn-danger" tabindex="8" @onclick="DeleteProductAsync" disabled="@(isSaving || editModel.ProductID <= 0)">Delete Product</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+
+    @if (editModel.ProductID > 0)
+    {
+        <ProductDetailOrderList ProductID="@editModel.ProductID" />
+    }
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "productId")]
+    public int? ProductId { get; set; }
+
+    private List<Products> productRows = new();
+    private Products editModel = CreateEmptyProduct();
+    private int selectedProductId;
+    private bool isLoading = true;
+    private bool isSaving;
+    private string? statusMessage;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProductsAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (ProductId.HasValue && ProductId.Value > 0 && ProductId.Value != selectedProductId)
+        {
+            selectedProductId = ProductId.Value;
+            await LoadSelectedProductAsync(selectedProductId);
+        }
+    }
+
+    private async Task LoadProductsAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            productRows = await ProductService.GetProductDetailAsync();
+
+            if (selectedProductId <= 0)
+            {
+                selectedProductId = ProductId.GetValueOrDefault() > 0
+                    ? ProductId!.Value
+                    : productRows.FirstOrDefault()?.ProductID ?? 0;
+            }
+
+            if (selectedProductId > 0)
+            {
+                await LoadSelectedProductAsync(selectedProductId);
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            productRows = new();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task LoadSelectedProductAsync(int productId)
+    {
+        try
+        {
+            var product = await ProductService.GetByIdAsync(productId);
+            if (product is not null)
+            {
+                editModel = product;
+                statusMessage = null;
+                errorMessage = null;
+            }
+            else
+            {
+                statusMessage = $"Product {productId} was not found.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    private void StartNewProduct()
+    {
+        selectedProductId = 0;
+        editModel = CreateEmptyProduct();
+        statusMessage = "Creating a new product.";
+        errorMessage = null;
+    }
+
+    private async Task SaveProductAsync()
+    {
+        isSaving = true;
+        errorMessage = null;
+        statusMessage = null;
+
+        try
+        {
+            Products saved;
+            if (editModel.ProductID <= 0)
+            {
+                saved = await ProductService.CreateAsync(editModel);
+                statusMessage = "Product created.";
+            }
+            else
+            {
+                saved = await ProductService.UpdateAsync(editModel);
+                statusMessage = "Product updated.";
+            }
+
+            selectedProductId = saved.ProductID;
+            await LoadProductsAsync();
+            await LoadSelectedProductAsync(selectedProductId);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task DeleteProductAsync()
+    {
+        if (editModel.ProductID <= 0)
+        {
+            return;
+        }
+
+        var confirmed = await JS.InvokeAsync<bool>("confirm", "Delete this product?");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        isSaving = true;
+        errorMessage = null;
+
+        try
+        {
+            await ProductService.DeleteAsync(editModel.ProductID);
+            statusMessage = "Product deleted.";
+            selectedProductId = 0;
+            editModel = CreateEmptyProduct();
+            await LoadProductsAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task OnProductSelectionChanged(ChangeEventArgs args)
+    {
+        if (!int.TryParse(Convert.ToString(args.Value), out var productId))
+        {
+            return;
+        }
+
+        if (productId <= 0)
+        {
+            StartNewProduct();
+            return;
+        }
+
+        selectedProductId = productId;
+        await LoadSelectedProductAsync(productId);
+    }
+
+    private static Products CreateEmptyProduct()
+    {
+        return new Products
+        {
+            ProductCode = string.Empty,
+            ProductName = string.Empty,
+        };
+    }
+}

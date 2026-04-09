@@ -1,0 +1,47 @@
+NorthwindFeaturesID,ItemName,Description,Navigation,LearnMore,HelpKeywords
+2,List form - Multiple items,Fixed width columns. A.k.a. Continuous forms,"Orders
+Employees
+Products",Create a form in Access#https://support.microsoft.com/office/create-a-form-in-access-5d550a3d-92e1-4f38-9772-7e7e21e80c6b#,Create form
+3,List form - Datasheet,Reorder and Resize columns,"Products > Click hyperlink > Orders for [product]
+Customers (technically a Split Form, but acts the same way",Create a form using a datasheet in Access#https://support.microsoft.com/office/create-a-form-using-the-datasheet-tool-d0cfef2d-1ffb-4300-8ab3-7bcef4b4ef6d#,Working with datasheets
+4,Single record form,,"Add Order. 
+Products > Click hyperlink",Create a form in Access#https://support.microsoft.com/office/create-a-form-in-access-5d550a3d-92e1-4f38-9772-7e7e21e80c6b#,Create form
+5,List form - Split form,Combination of Datasheet and Single Record form.,"Customer List
+Feature Matrix",Create a split form in Access#https://support.microsoft.com/office/create-a-split-form-e8eb0efb-2fa6-4315-9d4b-86e79a1fbe1e#,Create Split Form
+6,Resizable form,,Orders > Click hyperlink,#https://learn.microsoft.com/en-us/office/vba/api/access.form.borderstyle#,Form Borderstyle Property
+7,Popup form,Form can float anywhere,Add Employee. Assign Employee Privileges pops up.,Pop-up Forms#https://learn.microsoft.com/en-us/office/vba/api/access.form.popup#,Form.Popup
+8,Modal form,User cannot select outside of this form,"Welcome form
+Login form",Modal Property#https://support.microsoft.com/office/modal-property-0b934d8c-b1af-4405-8808-3a61219c6d99#,Modal Property
+9,Totals calculations,,"Orders
+Orders > Click hyperlink",,Totals
+10,Navigate using hyperlink,Check the embedded macro for the Click event of the item in design view,"Orders
+Customers
+Employees
+Product",Form DisplayAsHyperlink property#https://learn.microsoft.com/office/vba/api/access.textbox.displayashyperlink#,
+11,Open form with filter,Can use WhereCondition or OpenArgs argument of OpenForm,All hyperlink navigation forms,,Filter Forms
+12,Navigate form to another record,,Products > Click hyperlink > Go to Product,Find a record by selecting a value from a list#https://support.microsoft.com/office/enable-users-to-find-a-record-by-selecting-a-value-from-a-list-e3ed7711-433a-4931-9cab-b0f71a90c329#,Find a record by selecting a value from a list
+13,Apply predefined filter,,"Orders
+Orders > Click hyperlink > Recent Orders",Apply Filter to Forms#https://support.microsoft.com/office/filter-property-18be7152-a700-4f34-9768-74da413766a5#,Filter Forms
+14,Attachments,Files that are associated with a record,Employees > Click hyperlink > Employee picture,Attach files and graphics to records#https://support.microsoft.com/article/d40a09ad-a753-4a14-9161-7f15baad6dbd#,Attach Fields
+15,Editable value list,Dropdown allowing user to edit list items,Employees > Click hyperlink > Title,,Editable Value Lists
+16,Split form Splitter bar,,Customer List; the splitter bar is just above the grid column headers. Grab it and pull it down.,,Split Form
+17,Show/Hide columns in a datasheet view,,Customer List,,Working with Datasheets
+18,Reorder and resize columns,All Datasheet views can do this.,Customer List,,Working with Datasheets
+19,Open a web page,,Customers > Click hyperlink > Website,,Create or delete a Hyperlink field
+21,Phone number formatting,Input mask can allow for extra text,Customers > Click hyperlink > Business Phone,Use Input Masks to control data entry formats#https://support.microsoft.com/office/control-data-entry-formats-with-input-masks-e125997a-7791-49e5-8672-4a47832de8da#,Input Mask
+22,Formatting of text,"Called ""Rich Text"" in Access","Employees > Click hyperlink > Notes
+Products > Product Description field",Formatting Rich Text#https://support.microsoft.com/office/enable-or-disable-full-rich-text-formatting-in-a-rich-text-box-d3c71c1d-8c88-41e9-9ee5-2ca6a3d0ea67#,Rich Text
+23,Photo,,Employees > Click hyperlink > Employee picture,Attach Fields and Graphics to Records in your Database#https://support.microsoft.com/office/attach-files-and-graphics-to-the-records-in-your-database-d40a09ad-a753-4a14-9161-7f15baad6dbd#,Attach Fields
+24,Create Email,,Employees > Click hyperlink > Email  Address,Follow a Hyperlink in Access#https://learn.microsoft.com/office/vba/api/Access.Application.FollowHyperlink#,Create or delete a Hyperlink field
+25,Export data,To Excel or other formats,Products > Export to File,"Introduction to importing, linking and exporting data in Access#https://support.microsoft.com/office/introduction-to-importing-linking-and-exporting-data-in-access-08422593-42dd-4e73-bdf1-4c21fc3aa1b0#",Export Data
+26,Create orders programmatically,,Admin > Internet Orders,,
+27,Reset all dates programmatically,So you're working with current data,Admin > Reset Dates,,
+28,Charts and Graphs,"These are called ""Modern Chart""",Reports > Sales Reports,Introducing new and modern chart types in Access#https://techcommunity.microsoft.com/t5/access-blog/introducing-new-and-modern-chart-types/ba-p/193479#,New and Modern  Charts
+29,Automatic resizing of controls,"This is called ""Control Anchoring""",Orders > Click hyperlink > resize vertically,"Make controls stretch, shrink or move as you resize a form#https://support.microsoft.com/office/make-controls-stretch-shrink-or-move-as-you-resize-a-form-51fd88e0-43d3-4070-a298-18ba273f4cf8#",Stretch Controls
+30,Automatic tracking of Create and Modified user and date,Data Macros are created in table design view.,Open any table in Design view > Create Data Macros > Before Change,Create a data macro#https://support.microsoft.com/office/create-a-data-macro-b1b94bca-4f17-47ad-a66d-f296ef834200#,Data Macros in Access
+32,Error Handling,Global Error Handler in VBA,Link to Things you should know Starter Edition,Northwind 2.0 Starter Edition: a brief introduction to VBA#https://support.microsoft.com/office/northwind-2-0-starter-edition-a-brief-introduction-to-vba-9bf6c416-5522-469b-a057-30ab57e73868#,
+33,Navigation Pane,Use the Navigation Pane,n/a,Navigation Pane#https://support.microsoft.com/article/274dfc5a-281b-472b-94e2-ef931c5cc590#,
+34,Filter Property,,Companies > click a radio button in the header > Show Filter,Filter Property#https://support.microsoft.com/article/18be7152-a700-4f34-9768-74da413766a5#,
+35,Run macro at startup,Create a macro that runs when you open a database,n/a,Run macro at startup#https://support.microsoft.com/article/98ba1508-dcc6-4e0f-9698-a4755e548124#,
+36,Data Macros,Adding data macros in a desktop database,n/a,Data Macros#https://support.microsoft.com/article/74a736ec-9bff-4ad1-b27b-dbe63c07784c#,
+37,Access Glossary,Common terminology used by Access,n/a,Access Glossary#https://support.microsoft.com/article/29ab26b7-1f36-4da4-9e75-479f8e6e3c35#,

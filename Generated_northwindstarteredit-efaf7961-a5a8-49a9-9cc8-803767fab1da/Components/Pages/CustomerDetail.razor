@@ -1,0 +1,316 @@
+@page "/customer-detail"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Components.Forms
+@inject ICustomerService CustomerService
+@inject IJSRuntime JS
+
+<PageTitle>Customer Detail</PageTitle>
+
+<div class="container-fluid py-3 access-form access-customer-detail">
+    <h1 class="page-title mb-3">Customer Detail</h1>
+
+    <div class="card mb-3">
+        <div class="card-body row g-3 align-items-end">
+            <div class="col-md-6">
+                <label class="form-label" for="customer-selector">Customer</label>
+                <select id="customer-selector" class="form-select" tabindex="0" value="@selectedCustomerId" @onchange="OnCustomerSelectionChanged">
+                    <option value="0">-- Select Customer --</option>
+                    @foreach (var row in customerRows)
+                    {
+                        <option value="@row.CustomerID">@row.CustomerName (@row.CustomerID)</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6 d-flex gap-2">
+                <button type="button" class="btn btn-outline-primary" tabindex="1" @onclick="StartNewCustomer">Add Customer</button>
+                <button type="button" class="btn btn-outline-secondary" tabindex="2" @onclick="LoadCustomersAsync" disabled="@isLoading">Refresh List</button>
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(statusMessage))
+    {
+        <div class="alert alert-info" role="alert">@statusMessage</div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">@errorMessage</div>
+    }
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <EditForm Model="editModel" OnValidSubmit="SaveCustomerAsync">
+                <DataAnnotationsValidator />
+
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        <label class="form-label">Customer ID</label>
+                        <input class="form-control" value="@(editModel.CustomerID == 0 ? "(new)" : editModel.CustomerID)" readonly tabindex="-1" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Customer Name</label>
+                        <InputText class="form-control" tabindex="3" @bind-Value="editModel.CustomerName" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Business Phone</label>
+                        <InputText class="form-control" tabindex="4" @bind-Value="editModel.BusinessPhone" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Website</label>
+                        <InputText class="form-control" tabindex="5" @bind-Value="editModel.Website" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Address</label>
+                        <InputText class="form-control" tabindex="6" @bind-Value="editModel.Address" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">City</label>
+                        <InputText class="form-control" tabindex="7" @bind-Value="editModel.City" />
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">State</label>
+                        <InputText class="form-control" tabindex="8" @bind-Value="editModel.State" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Zip</label>
+                        <InputText class="form-control" tabindex="9" @bind-Value="editModel.Zip" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Contact First Name</label>
+                        <InputText class="form-control" tabindex="10" @bind-Value="editModel.PrimaryContactFirstName" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Contact Last Name</label>
+                        <InputText class="form-control" tabindex="11" @bind-Value="editModel.PrimaryContactLastName" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Contact Job Title</label>
+                        <InputText class="form-control" tabindex="12" @bind-Value="editModel.PrimaryContactJobTitle" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Contact Email</label>
+                        <InputText class="form-control" tabindex="13" @bind-Value="editModel.PrimaryContactEmailAddress" />
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Notes</label>
+                        <InputTextArea class="form-control" tabindex="14" @bind-Value="editModel.Notes" />
+                    </div>
+                </div>
+
+                <div class="mt-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary" tabindex="15" disabled="@isSaving">Save</button>
+                    <button type="button" class="btn btn-danger" tabindex="16" @onclick="DeleteCustomerAsync" disabled="@(isSaving || editModel.CustomerID <= 0)">Delete Customer</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+
+    @if (editModel.CustomerID > 0)
+    {
+        <div class="row g-3">
+            <div class="col-lg-6">
+                <CustomerDetailOrderList CustomerID="@editModel.CustomerID" />
+            </div>
+            <div class="col-lg-6">
+                <CustomerDetailProductList CustomerID="@editModel.CustomerID" />
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "customerId")]
+    public int? CustomerId { get; set; }
+
+    private List<CustomerListDto> customerRows = new();
+    private Customers editModel = CreateEmptyCustomer();
+    private int selectedCustomerId;
+    private bool isLoading = true;
+    private bool isSaving;
+    private string? statusMessage;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCustomersAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (CustomerId.HasValue && CustomerId.Value > 0 && CustomerId.Value != selectedCustomerId)
+        {
+            selectedCustomerId = CustomerId.Value;
+            await LoadSelectedCustomerAsync(selectedCustomerId);
+        }
+    }
+
+    private async Task LoadCustomersAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            customerRows = await CustomerService.GetCustomerListAsync();
+
+            if (selectedCustomerId <= 0)
+            {
+                selectedCustomerId = CustomerId.GetValueOrDefault() > 0
+                    ? CustomerId!.Value
+                    : customerRows.FirstOrDefault()?.CustomerID ?? 0;
+            }
+
+            if (selectedCustomerId > 0)
+            {
+                await LoadSelectedCustomerAsync(selectedCustomerId);
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            customerRows = new();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task LoadSelectedCustomerAsync(int customerId)
+    {
+        try
+        {
+            var customer = await CustomerService.GetByIdAsync(customerId);
+            if (customer is not null)
+            {
+                editModel = customer;
+                statusMessage = null;
+                errorMessage = null;
+            }
+            else
+            {
+                statusMessage = $"Customer {customerId} was not found.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    private void StartNewCustomer()
+    {
+        selectedCustomerId = 0;
+        editModel = CreateEmptyCustomer();
+        statusMessage = "Creating a new customer.";
+        errorMessage = null;
+    }
+
+    private async Task SaveCustomerAsync()
+    {
+        isSaving = true;
+        errorMessage = null;
+        statusMessage = null;
+
+        try
+        {
+            Customers saved;
+            if (editModel.CustomerID <= 0)
+            {
+                saved = await CustomerService.CreateAsync(editModel);
+                statusMessage = "Customer created.";
+            }
+            else
+            {
+                saved = await CustomerService.UpdateAsync(editModel);
+                statusMessage = "Customer updated.";
+            }
+
+            selectedCustomerId = saved.CustomerID;
+            await LoadCustomersAsync();
+            await LoadSelectedCustomerAsync(selectedCustomerId);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task DeleteCustomerAsync()
+    {
+        if (editModel.CustomerID <= 0)
+        {
+            return;
+        }
+
+        var confirmed = await JS.InvokeAsync<bool>("confirm", "Delete this customer record?");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        isSaving = true;
+        errorMessage = null;
+
+        try
+        {
+            await CustomerService.DeleteAsync(editModel.CustomerID);
+            statusMessage = "Customer deleted.";
+            selectedCustomerId = 0;
+            editModel = CreateEmptyCustomer();
+            await LoadCustomersAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task OnCustomerSelectionChanged(ChangeEventArgs args)
+    {
+        if (!int.TryParse(Convert.ToString(args.Value), out var customerId))
+        {
+            return;
+        }
+
+        if (customerId <= 0)
+        {
+            StartNewCustomer();
+            return;
+        }
+
+        selectedCustomerId = customerId;
+        await LoadSelectedCustomerAsync(customerId);
+    }
+
+    private static Customers CreateEmptyCustomer()
+    {
+        return new Customers
+        {
+            CustomerName = string.Empty,
+            Address = string.Empty,
+            City = string.Empty,
+            State = string.Empty,
+            Zip = string.Empty,
+        };
+    }
+}
+Empty,
+        };
+    }
+}

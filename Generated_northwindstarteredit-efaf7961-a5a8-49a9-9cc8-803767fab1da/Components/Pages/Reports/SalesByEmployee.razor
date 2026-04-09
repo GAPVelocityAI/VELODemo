@@ -1,0 +1,201 @@
+@page "/reports/sales-by-employee"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@inject IReportService ReportService
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Sales By Employee Report</PageTitle>
+
+<div class="container-fluid access-report access-sales-by-employee">
+    <div class="row mb-4 report-header-section">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="page-title">
+                    <i class="bi bi-bar-chart-line-fill me-2 text-primary"></i>
+                    Sales By Employee
+                </h1>
+                <p class="page-subtitle">Record Source: qryrptSalesByEmployee</p>
+            </div>
+            <button class="btn btn-outline-secondary" tabindex="0" @onclick="PrintReport">
+                <i class="bi bi-printer me-1"></i>Print
+            </button>
+        </div>
+    </div>
+
+    <div class="card mb-4 report-filter report-filter-section">
+        <div class="card-header py-2">
+            <i class="bi bi-funnel me-2"></i><span class="fw-medium">Filters</span>
+        </div>
+        <div class="card-body">
+            <EditForm Model="filterParams" OnValidSubmit="ApplyFilters">
+                <DataAnnotationsValidator />
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Start Date</label>
+                        <InputDate class="form-control" tabindex="1" @bind-Value="filterParams.StartDate" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">End Date</label>
+                        <InputDate class="form-control" tabindex="2" @bind-Value="filterParams.EndDate" />
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary" tabindex="3">
+                            <i class="bi bi-search me-1"></i>Apply
+                        </button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="text-center py-4">
+            <div class="spinner-border text-primary"></div>
+            <p class="text-muted mt-2">Loading report data...</p>
+        </div>
+    }
+    else if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>@errorMessage
+        </div>
+    }
+    else if (!groupedData.Any())
+    {
+        <div class="text-center py-4">
+            <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+            <p class="text-muted">No data available for this report</p>
+        </div>
+    }
+    else
+    {
+        <div class="card report-detail-section">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0 report-table">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th class="text-end">Order Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var monthGroup in groupedData)
+                        {
+                            var first = monthGroup.First();
+                            <tr class="table-light">
+                                <td colspan="2" class="fw-semibold">
+                                    <i class="bi bi-folder2-open me-1"></i>Month: @first.MonthYear
+                                </td>
+                            </tr>
+
+                            @foreach (var item in monthGroup)
+                            {
+                                <tr>
+                                    <td>@item.FullNameFNLN</td>
+                                    <td class="text-end">@item.OrderTotal.ToString("C")</td>
+                                </tr>
+                            }
+
+                            <tr class="table-light">
+                                <td class="text-end fst-italic">Subtotal</td>
+                                <td class="text-end fw-semibold">@monthGroup.Sum(x => x.OrderTotal).ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-light fw-bold">
+                            <td class="text-end">Grand Total</td>
+                            <td class="text-end">@grandTotal.ToString("C")</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-2 text-muted small report-footer-section">Generated: @generatedOn.ToString("g")</div>
+    }
+</div>
+
+@code {
+    private List<SalesByEmployeeReportDto> reportData = new();
+    private List<IGrouping<string, SalesByEmployeeReportDto>> groupedData = new();
+    private decimal grandTotal;
+    private bool isLoading = true;
+    private string? errorMessage;
+    private DateTime generatedOn = DateTime.Now;
+
+    private FilterParams filterParams = new()
+    {
+        StartDate = new DateTime(DateTime.Today.Year, 1, 1),
+        EndDate = DateTime.Today
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            reportData = await ReportService.GetRptSalesByEmployeeAsync(filterParams.StartDate, filterParams.EndDate);
+            ApplySortingAndGrouping();
+            generatedOn = DateTime.Now;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task ApplyFilters()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            reportData = await ReportService.GetRptSalesByEmployeeAsync(filterParams.StartDate, filterParams.EndDate);
+            ApplySortingAndGrouping();
+            generatedOn = DateTime.Now;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            reportData = new();
+            groupedData = new();
+            grandTotal = 0m;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void ApplySortingAndGrouping()
+    {
+        reportData = reportData
+            .OrderBy(x => x.MonthYearSort)
+            .ThenBy(x => x.FullNameFNLN)
+            .ToList();
+
+        groupedData = reportData
+            .GroupBy(x => x.MonthYearSort)
+            .OrderBy(g => g.Key)
+            .ToList();
+
+        grandTotal = reportData.Sum(x => x.OrderTotal);
+    }
+
+    private async Task PrintReport()
+    {
+        await JSRuntime.InvokeVoidAsync("window.print");
+    }
+
+    private sealed class FilterParams
+    {
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+    }
+}

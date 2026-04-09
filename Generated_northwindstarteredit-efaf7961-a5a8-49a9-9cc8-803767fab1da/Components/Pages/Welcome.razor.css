@@ -1,0 +1,23 @@
+:host {
+    display: block;
+}
+
+.access-form.access-welcome {
+    --access-form-bg: rgb(242, 242, 242);
+    --access-form-text: rgb(64, 64, 64);
+    --access-border: rgb(231, 231, 231);
+    max-width: 9.8333in;
+    margin: 0 auto;
+    font-family: Calibri, "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-form-text);
+}
+
+.access-form.access-welcome :deep(.card),
+.access-form.access-welcome :deep(.card-body) {
+    border-color: var(--access-border);
+}
+
+.access-form.access-welcome :deep(.card-body) {
+    background-color: var(--access-form-bg);
+}

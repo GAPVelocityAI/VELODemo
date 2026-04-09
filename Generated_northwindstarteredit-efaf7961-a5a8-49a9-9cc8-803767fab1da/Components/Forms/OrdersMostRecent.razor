@@ -1,0 +1,160 @@
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@inject IOrderService OrderService
+
+<div class="card access-form access-orders-most-recent">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="fw-semibold">Most Recent Orders</span>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Recent order filters">
+            <button class="btn @(selectedFilter == RecentOrderFilter.OrderDate ? "btn-primary" : "btn-outline-primary")"
+                    tabindex="0"
+                    @onclick="() => ApplyFilterAsync(RecentOrderFilter.OrderDate)">
+                Order Date
+            </button>
+            <button class="btn @(selectedFilter == RecentOrderFilter.ModifiedDate ? "btn-primary" : "btn-outline-primary")"
+                    tabindex="1"
+                    @onclick="() => ApplyFilterAsync(RecentOrderFilter.ModifiedDate)">
+                Modified Date
+            </button>
+            <button class="btn @(selectedFilter == RecentOrderFilter.Customer ? "btn-primary" : "btn-outline-primary")"
+                    tabindex="2"
+                    @onclick="() => ApplyFilterAsync(RecentOrderFilter.Customer)">
+                Customer
+            </button>
+            <button class="btn @(selectedFilter == RecentOrderFilter.Employee ? "btn-primary" : "btn-outline-primary")"
+                    tabindex="3"
+                    @onclick="() => ApplyFilterAsync(RecentOrderFilter.Employee)">
+                Employee
+            </button>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        @if (isLoading)
+        {
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary"></div>
+                <p class="text-muted mt-2 mb-0">Loading orders...</p>
+            </div>
+        }
+        else if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            <div class="alert alert-danger m-3" role="alert">@errorMessage</div>
+        }
+        else if (!string.IsNullOrWhiteSpace(infoMessage))
+        {
+            <div class="alert alert-warning m-3" role="alert">@infoMessage</div>
+        }
+
+        @if (!isLoading)
+        {
+            if (!orders.Any())
+            {
+                <div class="text-center text-muted py-4">No orders found.</div>
+            }
+            else
+            {
+                <table class="table table-sm table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Order Date</th>
+                            <th>Status</th>
+                            <th>Employee</th>
+                            <th>Customer</th>
+                            <th class="text-end">Order Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in orders)
+                        {
+                            <tr>
+                                <td>@order.OrderID</td>
+                                <td>@order.OrderDate.ToString("d")</td>
+                                <td>@order.StatusName</td>
+                                <td>@order.FullNameFNLN</td>
+                                <td>@order.CustomerName</td>
+                                <td class="text-end">@order.OrderTotal.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public int CustomerID { get; set; }
+    [Parameter] public int EmployeeID { get; set; }
+
+    private List<OrderSummaryDto> orders = new();
+    private RecentOrderFilter selectedFilter = RecentOrderFilter.OrderDate;
+    private bool isLoading = true;
+    private string? errorMessage;
+    private string? infoMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadOrdersAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (selectedFilter is RecentOrderFilter.Customer or RecentOrderFilter.Employee)
+        {
+            await LoadOrdersAsync();
+        }
+    }
+
+    private async Task ApplyFilterAsync(RecentOrderFilter filter)
+    {
+        selectedFilter = filter;
+        await LoadOrdersAsync();
+    }
+
+    private async Task LoadOrdersAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+        infoMessage = null;
+
+        try
+        {
+            orders = selectedFilter switch
+            {
+                RecentOrderFilter.OrderDate => await OrderService.GetOrdersMostRecentByOrderDateAsync(),
+                RecentOrderFilter.ModifiedDate => await OrderService.GetOrdersMostRecentByModifiedOnAsync(),
+                RecentOrderFilter.Customer when CustomerID > 0 => await OrderService.GetOrdersMostRecentByCustomerAsync(CustomerID),
+                RecentOrderFilter.Employee when EmployeeID > 0 => await OrderService.GetOrdersMostRecentByEmployeeAsync(EmployeeID),
+                _ => await OrderService.GetOrdersMostRecentByOrderDateAsync()
+            };
+
+            if (selectedFilter == RecentOrderFilter.Customer && CustomerID <= 0)
+            {
+                infoMessage = "Customer filter requires a CustomerID. Showing Order Date sort.";
+            }
+            else if (selectedFilter == RecentOrderFilter.Employee && EmployeeID <= 0)
+            {
+                infoMessage = "Employee filter requires an EmployeeID. Showing Order Date sort.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            orders = new();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private enum RecentOrderFilter
+    {
+        OrderDate,
+        ModifiedDate,
+        Customer,
+        Employee
+    }
+}

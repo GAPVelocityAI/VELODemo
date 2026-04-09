@@ -1,0 +1,123 @@
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@inject ISystemSettingsService SystemSettingsService
+
+<div class="card access-form access-admin-system-settings">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="fw-semibold">System Settings</span>
+        <button class="btn btn-sm btn-outline-secondary" tabindex="0" @onclick="LoadSettingsAsync" disabled="@isLoading">
+            Refresh
+        </button>
+    </div>
+
+    <div class="card-body">
+        @if (isLoading)
+        {
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary"></div>
+                <p class="text-muted mt-2 mb-0">Loading settings...</p>
+            </div>
+        }
+        else if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            <div class="alert alert-danger" role="alert">@errorMessage</div>
+        }
+        else if (!settings.Any())
+        {
+            <div class="text-center text-muted py-4">No settings found.</div>
+        }
+        else
+        {
+            @foreach (var setting in settings)
+            {
+                <EditForm Model="setting" OnValidSubmit="() => SaveSettingAsync(setting)" class="border rounded p-3 mb-3">
+                    <DataAnnotationsValidator />
+
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-2">
+                            <label class="form-label">Setting ID</label>
+                            <input class="form-control" value="@setting.SettingID" readonly />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Name</label>
+                            <InputText class="form-control" tabindex="1" @bind-Value="setting.SettingName" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Value</label>
+                            <InputText class="form-control" tabindex="2" @bind-Value="setting.SettingValue" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Notes</label>
+                            <InputText class="form-control" tabindex="3" @bind-Value="setting.Notes" />
+                        </div>
+                        <div class="col-md-1 d-grid">
+                            <button type="submit" class="btn btn-primary" tabindex="4" disabled="@savingIds.Contains(setting.SettingID)">
+                                @(savingIds.Contains(setting.SettingID) ? "..." : "Save")
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (rowMessages.TryGetValue(setting.SettingID, out var message))
+                    {
+                        <div class="small text-success mt-2">@message</div>
+                    }
+                </EditForm>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private List<SystemSettings> settings = new();
+    private readonly Dictionary<int, string> rowMessages = new();
+    private readonly HashSet<int> savingIds = new();
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSettingsAsync();
+    }
+
+    private async Task LoadSettingsAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+        rowMessages.Clear();
+
+        try
+        {
+            settings = await SystemSettingsService.GetSystemSettingsAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            settings = new();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task SaveSettingAsync(SystemSettings setting)
+    {
+        errorMessage = null;
+        rowMessages.Remove(setting.SettingID);
+        savingIds.Add(setting.SettingID);
+
+        try
+        {
+            await SystemSettingsService.UpdateAsync(setting);
+            rowMessages[setting.SettingID] = "Saved.";
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            savingIds.Remove(setting.SettingID);
+        }
+    }
+}

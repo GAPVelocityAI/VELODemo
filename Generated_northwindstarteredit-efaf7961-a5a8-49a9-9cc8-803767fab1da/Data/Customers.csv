@@ -1,0 +1,9 @@
+CustomerID,CustomerName,PrimaryContactLastName,PrimaryContactFirstName,PrimaryContactJobTitle,PrimaryContactEmailAddress,BusinessPhone,Address,City,State,Zip,Website,Notes,AddedBy,AddedOn,ModifiedBy,ModifiedOn
+1,Adatum Corporation,Chauvin,Alexandre,Senior Buyer,test1@test.com,1235551212,123 Oak Street,Redmond,WA,90001,#http://www.adatum.com/#,This is a customer note.,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+2,Adventure Works Cycles,,,,,234-555-1212,234 Elm Street,Tacoma,WA,90002,https://docs.microsoft.com/en-us/sql/samples/adventureworks-install-configure#https://docs.microsoft.com/en-us/sql/samples/adventureworks-install-configure#,,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+3,Best For You Organics Company,Eden,Bouchard,Dry Goods Rep,,,123 Elm Street,Mesa,AZ,90003,http://www.bestforyouorganics.com,,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+4,"Contoso, Inc.",,,,,,444 Birch Avenue,Atlanta,GA,90004,http://www.contoso.com/,,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+5,Woodgrove Bank,Fuster,Adriana,Sales Manager,,505-555-1212,567 Green Avenue,St. Louis,MO,90005,,,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+6,Wide World Importers,Gagnon,Alex,Senior Buyer,,600-555-1212,6001 Purple Street,Atlanta,GA,90006,,,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+7,Tailwind Traders,Albert,Sasha,Vendor Relations,,711-555-1212,70 N Blue Water Lane,Richmond,VA,90007,,,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+8,"Proseware, Inc.",Monte,Ariana,Senior Buyer,,801-222-1212,888 Mesquite Street,Manchester,NH,90008,,,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00

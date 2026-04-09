@@ -1,0 +1,89 @@
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@inject IOrderService OrderService
+
+<div class="card access-form access-employee-detail-order-list">
+    <div class="card-header fw-semibold">Employee Orders</div>
+    <div class="card-body p-0">
+        @if (isLoading)
+        {
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary"></div>
+                <p class="text-muted mt-2 mb-0">Loading orders...</p>
+            </div>
+        }
+        else if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            <div class="alert alert-danger m-3" role="alert">@errorMessage</div>
+        }
+        else if (!orders.Any())
+        {
+            <div class="text-center text-muted py-4">No orders found.</div>
+        }
+        else
+        {
+            <table class="table table-sm table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Order Date</th>
+                        <th>Status</th>
+                        <th>Customer</th>
+                        <th class="text-end">Order Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in orders)
+                    {
+                        <tr>
+                            <td>@order.OrderID</td>
+                            <td>@order.OrderDate.ToString("d")</td>
+                            <td>@order.StatusName</td>
+                            <td>@order.CustomerName</td>
+                            <td class="text-end">@order.OrderTotal.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    @if (!isLoading && orders.Any())
+    {
+        <div class="card-footer text-muted small">Orders: @orders.Count</div>
+    }
+</div>
+
+@code {
+    [Parameter] public int EmployeeID { get; set; }
+
+    private List<OrderSummaryDto> orders = new();
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadOrdersAsync();
+    }
+
+    private async Task LoadOrdersAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            orders = EmployeeID > 0
+                ? await OrderService.GetOrdersMostRecentByEmployeeAsync(EmployeeID)
+                : await OrderService.GetOrdersAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            orders = new();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

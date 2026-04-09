@@ -1,0 +1,6 @@
+StatusID,StatusCode,StatusName,SortOrder,AddedBy,AddedOn,ModifiedBy,ModifiedOn
+1,CLO,Closed,40,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+2,INV,Invoiced,20,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+3,NEW,New,10,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+4,SHI,Shipped,30,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+5,PAY,Paid,35,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00

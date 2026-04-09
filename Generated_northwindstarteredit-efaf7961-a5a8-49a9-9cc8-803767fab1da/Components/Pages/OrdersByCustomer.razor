@@ -1,0 +1,135 @@
+@page "/orders-by-customer"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@inject ILookupService LookupService
+@inject IOrderService OrderService
+
+<PageTitle>Orders By Customer</PageTitle>
+
+<div class="container-fluid py-3 access-form access-orders-by-customer">
+    <h1 class="page-title mb-3">Orders By Customer</h1>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <EditForm Model="filter" OnValidSubmit="LoadOrdersAsync">
+                <DataAnnotationsValidator />
+
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-6">
+                        <label class="form-label" for="customer-filter">Customer</label>
+                        <InputSelect id="customer-filter" TValue="int" class="form-select" tabindex="0" @bind-Value="filter.CustomerID">
+                            <option value="0">-- select customer --</option>
+                            @foreach (var customer in customers)
+                            {
+                                <option value="@customer.CustomerID">@customer.CustomerName</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="col-md-3 d-grid">
+                        <button type="submit" class="btn btn-primary" tabindex="1" disabled="@isLoading">Load Orders</button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">@errorMessage</div>
+    }
+
+    <div class="card">
+        <div class="card-body p-0">
+            @if (isLoading)
+            {
+                <div class="p-3 text-muted">Loading orders...</div>
+            }
+            else if (!orders.Any())
+            {
+                <div class="p-3 text-muted">No orders found for the selected customer.</div>
+            }
+            else
+            {
+                <table class="table table-sm table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Order Date</th>
+                            <th>Status</th>
+                            <th>Employee</th>
+                            <th class="text-end">Order Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in orders)
+                        {
+                            <tr>
+                                <td>@order.OrderID</td>
+                                <td>@order.OrderDate.ToString("d")</td>
+                                <td>@order.StatusName</td>
+                                <td>@order.FullNameFNLN</td>
+                                <td class="text-end">@order.OrderTotal.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<CboCustomerDto> customers = new();
+    private List<OrderSummaryDto> orders = new();
+    private OrderByCustomerFilter filter = new();
+    private bool isLoading;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            customers = await LookupService.GetCboCustomersAsync();
+            filter.CustomerID = customers.FirstOrDefault()?.CustomerID ?? 0;
+
+            if (filter.CustomerID > 0)
+            {
+                await LoadOrdersAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    private async Task LoadOrdersAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            orders = filter.CustomerID > 0
+                ? await OrderService.GetOrdersMostRecentByCustomerAsync(filter.CustomerID)
+                : new();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            orders = new();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private sealed class OrderByCustomerFilter
+    {
+        [Range(1, int.MaxValue, ErrorMessage = "Please choose a customer.")]
+        public int CustomerID { get; set; }
+    }
+}

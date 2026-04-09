@@ -1,0 +1,90 @@
+@page "/startup"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@inject ISystemSettingsService SystemSettingsService
+@inject NavigationManager Navigation
+
+<PageTitle>Startup</PageTitle>
+
+<div class="container-fluid py-3 access-form access-startup">
+    <h1 class="page-title mb-3">Startup</h1>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            @if (isLoading)
+            {
+                <p class="text-muted mb-0">Loading startup settings...</p>
+            }
+            else if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                <div class="alert alert-danger mb-0" role="alert">@errorMessage</div>
+            }
+            else
+            {
+                <p class="mb-1"><strong>First Time Run:</strong> @(isFirstTimeRun ? "Yes" : "No")</p>
+                <p class="mb-0"><strong>Show Welcome:</strong> @(showWelcome ? "Yes" : "No")</p>
+            }
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-primary" tabindex="0" @onclick="GoToLogin">Login</button>
+            <button type="button" class="btn btn-outline-primary" tabindex="1" @onclick="GoToWelcome">Welcome</button>
+            <button type="button" class="btn btn-outline-secondary" tabindex="2" @onclick="GoToMainMenu">Skip to Main Menu</button>
+        </div>
+    </div>
+
+    @* TODO: Startup Access macros are not represented by a dedicated startup service method; keep this as a navigation shell. *@
+</div>
+
+@code {
+    private bool isLoading = true;
+    private bool isFirstTimeRun;
+    private bool showWelcome = true;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var settings = await SystemSettingsService.GetSystemSettingsAsync();
+
+            var firstRun = settings.FirstOrDefault(x => x.SettingID == (int)Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models.Enums.SystemSettings.FirstTimeRun);
+            var showWelcomeSetting = settings.FirstOrDefault(x => x.SettingID == (int)Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models.Enums.SystemSettings.ShowWelcome);
+
+            isFirstTimeRun = IsTrueValue(firstRun?.SettingValue);
+            showWelcome = IsTrueValue(showWelcomeSetting?.SettingValue);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void GoToLogin() => Navigation.NavigateTo("/login");
+
+    private void GoToWelcome() => Navigation.NavigateTo("/welcome");
+
+    private void GoToMainMenu() => Navigation.NavigateTo("/main-menu");
+
+    private static bool IsTrueValue(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        if (bool.TryParse(value, out var boolValue))
+        {
+            return boolValue;
+        }
+
+        return value == "-1" || value == "1";
+    }
+}

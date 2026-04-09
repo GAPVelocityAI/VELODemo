@@ -1,0 +1,95 @@
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@inject IOrderService OrderService
+
+<div class="card access-form access-product-detail-order-list">
+    <div class="card-header fw-semibold">Product Orders</div>
+    <div class="card-body p-0">
+        @if (isLoading)
+        {
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary"></div>
+                <p class="text-muted mt-2 mb-0">Loading product orders...</p>
+            </div>
+        }
+        else if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            <div class="alert alert-danger m-3" role="alert">@errorMessage</div>
+        }
+        else if (!rows.Any())
+        {
+            <div class="text-center text-muted py-4">No orders found for this product.</div>
+        }
+        else
+        {
+            <table class="table table-sm table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Order Date</th>
+                        <th class="text-end">Quantity</th>
+                        <th class="text-end">Unit Price</th>
+                        <th class="text-end">Extended Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in rows)
+                    {
+                        <tr>
+                            <td>@row.OrderID</td>
+                            <td>@row.OrderDate.ToString("d")</td>
+                            <td class="text-end">@row.Quantity</td>
+                            <td class="text-end">@row.UnitPrice.ToString("C")</td>
+                            <td class="text-end">@row.ExtendedPrice.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    @if (!isLoading && rows.Any())
+    {
+        <div class="card-footer d-flex justify-content-between small text-muted">
+            <span>Rows: @rows.Count</span>
+            <span>Total: @rows.Sum(x => x.ExtendedPrice).ToString("C")</span>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public int ProductID { get; set; }
+
+    private List<ProductOrderDto> rows = new();
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadRowsAsync();
+    }
+
+    private async Task LoadRowsAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            var allRows = await OrderService.GetProductOrdersAsync();
+
+            // TODO: Add IOrderService.GetProductOrdersByProductAsync(int productId) for server-side filtering.
+            rows = ProductID > 0
+                ? allRows.Where(x => x.ProductID == ProductID).OrderByDescending(x => x.OrderDate).ToList()
+                : allRows.OrderByDescending(x => x.OrderDate).ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            rows = new();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

@@ -1,0 +1,62 @@
+ID,Welcome,About,Learn,DataMacro
+1,"<div>The Northwind Starter Edition Template showcases major Access features.</div>
+
+<div>&nbsp;</div>
+
+<div>Northwind is a fictitious Trading Company whose customers are independent grocery stores. </div>
+
+<div>Customers call in orders or place them over the internet. </div>
+
+<div>Northwind invoices, ships, collects payments, and closes orders. </div>
+
+<div>Sample data in this template will get you started quickly.</div>
+
+<div>&nbsp;</div>","<div>This Northwind Starter Edition template is brought to you by the &quot;Northwind Working Group&quot;, a community team of volunteers who spent a year designing, implementing, documenting, and testing this application, and its companion Northwind Developer Edition.</div>
+
+<div>&nbsp;</div>
+
+<div>The core working group members are Dawn Taylor, George Hepworth, George Young, Kim Young, and Tom van Stiphout. Michael Aldridge led the effort at Microsoft.</div>
+
+<div>&nbsp;</div>
+
+<div>Many people contributed to the success of this project, including focus group members, alpha testers, former and current Access MVPs, videographers, help text editors, accessibility testers, intellectual property lawyers, and many others. It really takes a whole community.</div>
+
+<div>&nbsp;</div>
+
+<div>Please share your feedback with the team. We will be watching the Access forum in Microsoft Tech Community, as well as other forums where Access developers hang out.</div>",https://support.office.com/f1/topic/ee4628b8-985e-4f39-87f5-62b5751c43f8,"<?xml version=""1.0"" encoding=""UTF-16"" standalone=""no""?>
+<DataMacros xmlns=""http://schemas.microsoft.com/office/accessservices/2009/11/application""><DataMacro Event=""BeforeChange""><Statements>
+<Comment>Upate the Audit Fields for an Insert (AddedBy AddedOn) or and Update (ModifiedBy ModifiedOn)</Comment>
+<ConditionalBlock>
+<If><Condition>[IsInsert]</Condition>
+<Statements>
+<Action Name=""SetField""><Argument Name=""Field"">AddedBy</Argument><Argument Name=""Value"">GetAuditFieldsUserName()</Argument></Action>
+<Action Name=""SetField""><Argument Name=""Field"">AddedOn</Argument><Argument Name=""Value"">Now()</Argument></Action>
+<Action Name=""SetField""><Argument Name=""Field"">ModifiedBy</Argument><Argument Name=""Value"">GetAuditFieldsUserName()</Argument></Action>
+<Action Name=""SetField""><Argument Name=""Field"">ModifiedOn</Argument><Argument Name=""Value"">Now()</Argument></Action>
+</Statements>
+</If>
+<Else>
+<Statements>
+<Comment>This is an update</Comment>
+<Action Name=""SetField""><Argument Name=""Field"">ModifiedBy</Argument><Argument Name=""Value"">GetAuditFieldsUserName()</Argument></Action>
+<Action Name=""SetField""><Argument Name=""Field"">ModifiedOn</Argument><Argument Name=""Value"">Now()</Argument></Action>
+<Comment>We only set the Added audit values once when the record is added.  If the user has deleted the AddedBy or AddedOn values we want to put them back  </Comment>
+<ConditionalBlock>
+<If>
+<Condition>[Old].[AddedBy]&lt;&gt;[AddedBy]</Condition>
+<Statements><Action Name=""SetField""><Argument Name=""Field"">AddedBy</Argument><Argument Name=""Value"">[Old].[AddedBy]</Argument>
+</Action>
+</Statements>
+</If>
+<Else><Statements>
+<ConditionalBlock>
+<If><Condition>IsNull([AddedBy])</Condition><Statements>
+<Action Name=""SetField""><Argument Name=""Field"">AddedBy</Argument><Argument Name=""Value"">[Old].[AddedBy]</Argument></Action>
+</Statements></If></ConditionalBlock></Statements></Else></ConditionalBlock>
+<ConditionalBlock>
+<If><Condition>IsNull([AddedOn])</Condition>
+<Statements><Action Name=""SetField""><Argument Name=""Field"">AddedOn</Argument><Argument Name=""Value"">[Old].[AddedOn]</Argument></Action>
+</Statements></If>
+<Else><Statements><ConditionalBlock><If><Condition>[Old].[AddedOn]&lt;&gt;[AddedOn]</Condition><Statements><Action Name=""SetField""><Argument Name=""Field"">AddedOn</Argument><Argument Name=""Value"">[Old].[AddedOn]</Argument></Action>
+</Statements></If></ConditionalBlock></Statements></Else></ConditionalBlock></Statements></Else></ConditionalBlock></Statements>
+</DataMacro></DataMacros>"

@@ -1,0 +1,103 @@
+@page "/customer-list"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Models
+@using Generated_northwindstarteredit_efaf7961_a5a8_49a9_9cc8_803767fab1da.Services
+@inject ICustomerService CustomerService
+@inject NavigationManager Navigation
+
+<PageTitle>Customer List</PageTitle>
+
+<div class="container-fluid py-3 access-form access-customer-list">
+    <h1 class="page-title mb-3">Customer List</h1>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="fw-semibold">Customers</span>
+            <button type="button" class="btn btn-sm btn-outline-secondary" tabindex="0" @onclick="LoadCustomersAsync" disabled="@isLoading">Refresh</button>
+        </div>
+        <div class="card-body p-0">
+            @if (isLoading)
+            {
+                <div class="p-3 text-muted">Loading customers...</div>
+            }
+            else if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                <div class="alert alert-danger m-3" role="alert">@errorMessage</div>
+            }
+            else if (!rows.Any())
+            {
+                <div class="p-3 text-muted">No customers found.</div>
+            }
+            else
+            {
+                <table class="table table-sm table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Customer #</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Zip</th>
+                            <th>Business Phone</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in rows)
+                        {
+                            <tr>
+                                <td>@row.CustomerID</td>
+                                <td>@row.CustomerName</td>
+                                <td>@row.Address</td>
+                                <td>@row.City</td>
+                                <td>@row.State</td>
+                                <td>@row.Zip</td>
+                                <td>@row.BusinessPhone</td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" tabindex="1" @onclick="() => OpenCustomer(row.CustomerID)">Open</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<CustomerListDto> rows = new();
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCustomersAsync();
+    }
+
+    private async Task LoadCustomersAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            rows = await CustomerService.GetCustomerListAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            rows = new();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void OpenCustomer(int customerId)
+    {
+        Navigation.NavigateTo($"/customer-detail?customerId={customerId}");
+    }
+}

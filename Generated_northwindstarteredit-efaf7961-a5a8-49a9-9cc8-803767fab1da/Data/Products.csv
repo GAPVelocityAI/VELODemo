@@ -1,0 +1,49 @@
+ProductID,ProductCode,ProductName,ProductDescription,UnitPrice,AddedBy,AddedOn,ModifiedBy,ModifiedOn
+1,B-1,Chai,"<div><font face=""Monotype Corsiva"" color=""#0C0C0C""><strong><em>Black tea</em></strong></font><em> </em>with a blend of cardamom, ginger, cloves and cinnamon</div>",18,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+2,CO-3,Syrup,<div>Pure cane syrup</div>,10,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+3,CO-4,Cajun Seasoning,"<div>Adds <font face=Forte color=""#C55A11"">zingy </font>new taste to meat, seafood, vegetables, eggs and more</div>",22,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+4,O-5,Olive Oil,<div>Extra virgin for smooth taste and versatility</div>,21.35,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+5,JP-6,Boysenberry Spread,"<div>Boy, some berries. A <font face=""Berlin Sans FB"" color=""#6F3198""><strong>delicious</strong></font><font
+color=""#6F3198""> </font>alternative topping for toast, pancakes and waffles</div>",25,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+6,DFN-7,Dried Pears,<div>A sweet treat for hikers and snackers</div>,30,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+7,S-8,Curry Sauce,"<div>Thai style red curry sauce is a zesty blend of red chili puree, coconut milk, onions, garlic and ginger</div>",40,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+8,DFN-14,Walnuts,"<div>Shelled, energy-dense and loaded with polyunsaturated &quot;good&quot; fats. Perfect baking and snacking</div>",23.25,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+9,CFV-17,Fruit Cocktail,"<div>Diced peaches, pears, pineapple and sweet <font face=""Bauhaus 93""
+color=""#CC0066""><strong>cherries</strong></font><font face=""Bauhaus 93""> </font>in heavy syrup</div>",39,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+10,BGM-19,Chocolate Biscuits Mix,"<div>A flaky, buttery, <font face=""Lucida Handwriting"" color=""#7A4E2B""><strong>chocolatey </strong></font>twist on traditional biscuits</div>",9.2,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+12,BGM-21,Scones,<div>The perfect accompaniment to coffee or proper tea</div>,10,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+13,B-34,Beer,"<div>Belgian-style: a flavorful, balanced beer with characteristics of hops, malt and fruity yeast</div>",14,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+14,CM-40,Crab Meat,"<div>Authentic Maryland Blue crab meat, packed by hand</div>",18.4,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+15,SO-41,Clam Chowder,"<div>New England style with a creamy base, with generous portions of clams and bacon</div>",9.65,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+16,B-43,Coffee,<div>Pre-ground medium roast is a full-flavored blend of 100% Arabica beans from Guatemala and Ethiopia</div>,46,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+17,CA-48,Chocolate,"<div>Smooth and satisfying, 72% <font face=Broadway color=""#7A4E2B"">cacao </font>for an antioxidant boost</div>",12.75,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+18,DFN-51,Dried Apples,<div>Apple chips for lunchboxes and snacks are high in fiber and nutrients</div>,53,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+19,G-52,Long Grain Rice,<div>Premium white Basmati</div>,7,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+20,P-56,Gnocchi,"<div>Traditional Italian potato dumplings, fully-cooked; ready to heat and eat</div>",38,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+21,P-57,Ravioli,<div>Tender pasta envelopes filled with ricotta cheese and spinach</div>,19.5,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+22,S-65,Hot Pepper Sauce,"<div><font face=Chiller size=4 color=""#ED1C24""><strong>Hot stuff!</strong></font><font
+size=4> </font>Adds tastebud-searing warmth to any dish</div>",21.05,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+23,S-66,Tomato Sauce,"<div>Delicately seasoned with salt, pepper and herbs</div>",17,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+24,D-72,Mozzarella,"<div>Fresh, mild and cheesy; a staple of Italian cuisine</div>",34.8,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+25,DFN-74,Almonds,<div>Premium almonds from California's Central Valley</div>,10,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+26,CO-77,Mustard,<div>Stone-ground dijon-style prepared mustard</div>,13,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+27,DFN-80,Dried Plums,"<div>Dense, sweet <font face=""Curlz MT"" size=3 color=""#6F3198""><strong>dried plums</strong></font>: the perfect snack for people on the go</div>",3.5,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+28,B-81,Green Tea,"<div>Authentic <font color=""#538135""><strong>green tea</strong></font> leaves, dried quickly after harvest to preserve their vibrant color and naturally occurring antioxidants</div>",2.99,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+29,C-82,Granola,"<div>A super <font face=""Snap ITC"" size=3 color=""#2F5496"">crunchy </font>treat: Oats loaded with almonds, walnuts, hazelnuts, raisins, coconut and dried cranberry</div>",4,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+30,CS-83,Potato Chips,<div>Kettle-cooked crispy snackers</div>,1.8,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+31,BGM-85,Brownie Mix,"<div>Rich and fudgy, for a dense, chewy brownie with fudge topping</div>",12.49,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+32,BGM-86,Cake Mix,"<div><font face=""Bahnschrift Condensed""><em>Versatile</em></font><em> </em>yellow mix for moist, fluffy cakes and cupcakes</div>",15.99,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+33,B-87,Tea,"<div>Robust<font color=""#0C0C0C""><strong> </strong></font><font
+face=""Kristen ITC"" color=""#0C0C0C""><strong>black tea leaves</strong></font> have rich flavor, dark color, and a smooth finish</div>",4,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+34,CFV-88,Pears,"<div>Organic <font face=""Berlin Sans FB"" color=""#BA1419"">red D'Anjou pears</font>, ripened to pear-fection</div>",1.3,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+35,CFV-89,Peaches,"<div>Delicious, juicy freestone peaches suitable for canning, baking and snacking</div>",1.5,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+36,CFV-90,Pineapple,"<div>Fresh from Hawaii: ripe, succulent whole fruits</div>",1.8,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+37,CFV-91,Cherry Pie Filling,"<div>Real, whole, tart <font face=""Bauhaus 93"" color=""#CC0066""><strong>cherries</strong></font><font
+face=""Bauhaus 93""> </font>hand-picked at their peak</div>",2,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+38,CFV-92,Green Beans,"<div>Whole fresh <font color=""#538135""><strong>green </strong></font>beans picked in their prime</div>",1.2,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+39,CFV-93,Corn,"<div>Delicious, tender tri-color sweet corn on the cob</div>",1.2,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+40,CFV-94,Peas,"<div>Baby <font face=""Showcard Gothic"" color=""#538135""><strong>green peas</strong> </font>in the pod, ready for shucking</div>",1.5,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+41,CM-95,Tuna Fish,<div>Wild-caught solid-white albacore tuna packed in water</div>,2,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+42,CM-96,Smoked Salmon,<div>From the Pacific Northwest's pristine icy cold waters and hardwood-smoked </div>,4,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+44,SO-98,Vegetable Soup,<div>Farm-fresh diced vegetable medley in a rich vegetable broth</div>,1.89,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
+45,SO-99,Chicken Soup,"<div>To warm the soul. Rich broth chock-full of tender chicken, fresh diced vegetables and hearty egg noodles</div>",1.95,Admin,2026-02-06 00:00:00+00:00,Admin,2026-02-06 00:00:00+00:00
