@@ -1,0 +1,26 @@
+:host[b-ftieaxgwns] {
+    display: block;
+}
+
+.access-form.access-admin-internet-orders[b-ftieaxgwns] {
+    --access-form-bg: rgb(242, 242, 242);
+    --access-form-text: rgb(64, 64, 64);
+    --access-border: rgb(231, 231, 231);
+    max-width: 5.4583in;
+    margin: 0 auto;
+    font-family: Calibri, "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-form-text);
+}
+
+.access-form.access-admin-internet-orders :deep(.card)[b-ftieaxgwns] {
+    border-color: var(--access-border);
+}
+
+.access-form.access-admin-internet-orders :deep(.card-body)[b-ftieaxgwns] {
+    background-color: var(--access-form-bg);
+}
+
+.access-form.access-admin-internet-orders :deep(.form-control)[b-ftieaxgwns] {
+    width: 100%;
+}

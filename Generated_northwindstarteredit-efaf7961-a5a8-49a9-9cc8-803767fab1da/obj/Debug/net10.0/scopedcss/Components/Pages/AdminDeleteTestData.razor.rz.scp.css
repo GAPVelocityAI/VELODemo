@@ -1,0 +1,22 @@
+:host[b-ot0331u7kq] {
+    display: block;
+}
+
+.access-form.access-admin-delete-test-data[b-ot0331u7kq] {
+    --access-form-bg: rgb(242, 242, 242);
+    --access-form-text: rgb(64, 64, 64);
+    --access-border: rgb(231, 231, 231);
+    max-width: 5.4583in;
+    margin: 0 auto;
+    font-family: Calibri, "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-form-text);
+}
+
+.access-form.access-admin-delete-test-data :deep(.card)[b-ot0331u7kq] {
+    border-color: var(--access-border);
+}
+
+.access-form.access-admin-delete-test-data :deep(.card-body)[b-ot0331u7kq] {
+    background-color: var(--access-form-bg);
+}

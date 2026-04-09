@@ -1,0 +1,30 @@
+:host[b-w4z1dgytju] {
+    display: block;
+}
+
+.access-form.access-employee-detail[b-w4z1dgytju] {
+    --access-form-bg: rgb(242, 242, 242);
+    --access-form-text: rgb(64, 64, 64);
+    --access-border: rgb(231, 231, 231);
+    max-width: 12.7083in;
+    margin: 0 auto;
+    font-family: Calibri, "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-form-text);
+}
+
+.access-form.access-employee-detail :deep(.card)[b-w4z1dgytju],
+.access-form.access-employee-detail :deep(.card-header)[b-w4z1dgytju],
+.access-form.access-employee-detail :deep(.card-body)[b-w4z1dgytju],
+.access-form.access-employee-detail :deep(.card-footer)[b-w4z1dgytju] {
+    border-color: var(--access-border);
+}
+
+.access-form.access-employee-detail :deep(.card-body)[b-w4z1dgytju] {
+    background-color: var(--access-form-bg);
+}
+
+.access-form.access-employee-detail :deep(.form-control)[b-w4z1dgytju],
+.access-form.access-employee-detail :deep(.form-select)[b-w4z1dgytju] {
+    width: 100%;
+}

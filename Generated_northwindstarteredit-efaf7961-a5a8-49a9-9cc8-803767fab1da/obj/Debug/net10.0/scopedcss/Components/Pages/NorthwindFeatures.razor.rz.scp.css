@@ -1,0 +1,23 @@
+:host[b-itewungmf6] {
+    display: block;
+}
+
+.access-form.access-northwind-features[b-itewungmf6] {
+    --access-form-bg: rgb(242, 242, 242);
+    --access-form-text: rgb(64, 64, 64);
+    --access-border: rgb(231, 231, 231);
+    max-width: 7in;
+    margin: 0 auto;
+    font-family: Calibri, "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-form-text);
+}
+
+.access-form.access-northwind-features :deep(.card)[b-itewungmf6],
+.access-form.access-northwind-features :deep(.card-body)[b-itewungmf6] {
+    border-color: var(--access-border);
+}
+
+.access-form.access-northwind-features :deep(.card-body)[b-itewungmf6] {
+    background-color: var(--access-form-bg);
+}

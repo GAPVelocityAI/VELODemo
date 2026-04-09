@@ -1,0 +1,25 @@
+:host[b-0aclq3vcou] {
+    display: block;
+}
+
+.access-form.access-login[b-0aclq3vcou] {
+    --access-form-bg: rgb(242, 242, 242);
+    --access-form-text: rgb(64, 64, 64);
+    --access-border: rgb(231, 231, 231);
+    max-width: 5.9792in;
+    margin: 0 auto;
+    font-family: Calibri, "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-form-text);
+}
+
+.access-form.access-login :deep(.card)[b-0aclq3vcou],
+.access-form.access-login :deep(.card-body)[b-0aclq3vcou] {
+    border-color: var(--access-border);
+    background-color: var(--access-form-bg);
+}
+
+.access-form.access-login :deep(.form-control)[b-0aclq3vcou],
+.access-form.access-login :deep(.form-select)[b-0aclq3vcou] {
+    width: 100%;
+}

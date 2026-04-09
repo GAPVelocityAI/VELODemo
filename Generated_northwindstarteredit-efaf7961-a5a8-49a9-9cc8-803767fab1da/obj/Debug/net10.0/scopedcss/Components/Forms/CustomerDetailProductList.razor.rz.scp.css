@@ -1,0 +1,20 @@
+:host[b-0fi80eelxe] {
+    display: block;
+}
+
+.access-form.access-customer-detail-product-list[b-0fi80eelxe] {
+    --access-form-bg: rgb(242, 242, 242);
+    --access-form-text: rgb(64, 64, 64);
+    --access-border: rgb(231, 231, 231);
+    max-width: 5.2083in;
+    margin: 0 auto;
+    font-family: Calibri, "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-form-text);
+    border-color: var(--access-border);
+}
+
+.access-form.access-customer-detail-product-list :deep(.card-header)[b-0fi80eelxe],
+.access-form.access-customer-detail-product-list :deep(.card-footer)[b-0fi80eelxe] {
+    background-color: var(--access-form-bg);
+}

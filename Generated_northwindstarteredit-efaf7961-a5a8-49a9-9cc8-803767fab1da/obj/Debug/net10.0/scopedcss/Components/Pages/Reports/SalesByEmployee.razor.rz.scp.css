@@ -1,0 +1,134 @@
+.access-report[b-v0o5yb11ug] {
+    --access-text-color: #3f3f3f;
+    --access-muted-color: #666a70;
+    --access-rule-color: #d8dbe0;
+    --access-section-gap: 0.08in;
+    --access-print-gap: 0.05in;
+    font-family: Calibri, "Segoe UI", Tahoma, Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.25;
+    color: var(--access-text-color);
+    margin-inline: auto;
+    padding-inline: 0.1in;
+}
+
+.access-sales-by-employee[b-v0o5yb11ug] {
+    max-width: 7.9583in;
+}
+
+.access-report .page-title[b-v0o5yb11ug] {
+    margin-bottom: 0.04in;
+    color: #2f3338;
+    font-size: 17pt;
+    font-weight: 600;
+}
+
+.access-report .page-subtitle[b-v0o5yb11ug],
+.access-report .report-footer-section[b-v0o5yb11ug],
+.access-report .text-muted[b-v0o5yb11ug] {
+    color: var(--access-muted-color) !important;
+}
+
+.access-report .report-header-section[b-v0o5yb11ug],
+.access-report .report-filter-section[b-v0o5yb11ug],
+.access-report .report-detail-section[b-v0o5yb11ug],
+.access-report .report-footer-section[b-v0o5yb11ug] {
+    margin-bottom: var(--access-section-gap);
+}
+
+.access-sales-by-employee .report-header-section[b-v0o5yb11ug] {
+    min-height: 0.95in;
+}
+
+.access-sales-by-employee .report-filter-section[b-v0o5yb11ug] {
+    min-height: 1.15in;
+}
+
+.access-sales-by-employee .report-detail-section[b-v0o5yb11ug] {
+    min-height: 4.15in;
+}
+
+.access-sales-by-employee .report-footer-section[b-v0o5yb11ug] {
+    min-height: 0.24in;
+    margin-bottom: 0;
+}
+
+.access-report .card[b-v0o5yb11ug] {
+    border: 1px solid var(--access-rule-color);
+    box-shadow: none;
+    border-radius: 2px;
+}
+
+.access-report .report-table[b-v0o5yb11ug] {
+    margin-bottom: 0;
+}
+
+.access-report .report-table th[b-v0o5yb11ug] {
+    color: #2e3237;
+    font-weight: 600;
+    border-bottom-width: 1px;
+}
+
+.access-report .report-table td[b-v0o5yb11ug],
+.access-report .report-table th[b-v0o5yb11ug] {
+    padding: 0.11in 0.08in;
+    vertical-align: top;
+}
+
+.access-report .form-control[b-v0o5yb11ug],
+.access-report .btn[b-v0o5yb11ug] {
+    font-family: inherit;
+    font-size: 10.5pt;
+}
+
+.access-report.report-columns-multi[b-v0o5yb11ug] {
+    column-count: var(--report-column-count, 2);
+    column-gap: 0.25in;
+    column-fill: auto;
+}
+
+.access-report.report-columns-multi .report-header-section[b-v0o5yb11ug],
+.access-report.report-columns-multi .report-filter-section[b-v0o5yb11ug],
+.access-report.report-columns-multi .report-detail-section[b-v0o5yb11ug],
+.access-report.report-columns-multi .report-footer-section[b-v0o5yb11ug],
+.access-report.report-columns-multi .card[b-v0o5yb11ug] {
+    break-inside: avoid-column;
+}
+
+@page {
+    margin: 0.35in 0.3in;
+}
+
+@media print {
+    .access-report[b-v0o5yb11ug] {
+        max-width: none;
+        width: 100%;
+        padding-inline: 0;
+    }
+
+    .access-report .btn[b-v0o5yb11ug],
+    .access-report nav[b-v0o5yb11ug],
+    .access-report .card-header[b-v0o5yb11ug],
+    .access-report .report-filter[b-v0o5yb11ug] {
+        display: none !important;
+    }
+
+    .access-report .report-header-section[b-v0o5yb11ug],
+    .access-report .report-filter-section[b-v0o5yb11ug],
+    .access-report .report-detail-section[b-v0o5yb11ug],
+    .access-report .report-footer-section[b-v0o5yb11ug] {
+        margin-bottom: var(--access-print-gap);
+    }
+
+    .access-report .report-table[b-v0o5yb11ug],
+    .access-report .report-table tr[b-v0o5yb11ug],
+    .access-report .card[b-v0o5yb11ug] {
+        page-break-inside: avoid;
+    }
+
+    .access-report .table-light[b-v0o5yb11ug] {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        background-color: #f1f1f1 !important;
+    }
+}
