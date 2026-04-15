@@ -1,0 +1,34 @@
+@page "/admin-delete-test-data"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject IJSRuntime JS
+
+<div class="card shadow-sm access-form access-admin-delete-test-data">
+    <div class="card-header">Delete Test Data</div>
+    <div class="card-body">
+        <p class="text-muted">Removes sample/test data. Hook this page to a dedicated cleanup service when available.</p>
+        <button class="btn btn-danger" tabindex="1" @onclick="RemoveTestDataAsync">Remove Test Data</button>
+
+        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        {
+            <div class="alert alert-info py-2 mt-3">@statusMessage</div>
+        }
+    </div>
+</div>
+
+@code {
+    private string? statusMessage;
+
+    private async Task RemoveTestDataAsync()
+    {
+        var confirmed = await JS.InvokeAsync<bool>("confirm", "Remove test data?");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        // TODO: Add service method to perform test-data deletion workflow.
+        statusMessage = "Delete test data workflow is not yet implemented.";
+    }
+}

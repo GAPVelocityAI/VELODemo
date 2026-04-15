@@ -1,0 +1,72 @@
+@page "/admin-internet-orders"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject ISystemSettingsService SystemSettingsService
+@inject IModOrdersService ModOrdersService
+
+<div class="card shadow-sm access-form access-admin-internet-orders">
+    <div class="card-header">Internet Orders</div>
+    <div class="card-body">
+        <EditForm Model="request" OnValidSubmit="CreateOrdersAsync">
+            <DataAnnotationsValidator />
+            <div class="row g-2 align-items-end">
+                <div class="col-md-6">
+                    <label class="form-label">Order Count</label>
+                    <InputNumber class="form-control" tabindex="1" @bind-Value="request.OrderCount" />
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary" tabindex="2" type="submit">Create</button>
+                </div>
+            </div>
+        </EditForm>
+
+        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        {
+            <div class="alert alert-info py-2 mt-3">@statusMessage</div>
+        }
+
+        <div class="table-responsive mt-3">
+            <table class="table table-sm table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Setting</th>
+                        <th>Value</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var setting in settings)
+                    {
+                        <tr>
+                            <td>@setting.SettingName</td>
+                            <td>@setting.SettingValue</td>
+                            <td>@setting.Notes</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<SystemSettings> settings = [];
+    private CreateOrdersRequest request = new();
+    private string? statusMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        settings = await SystemSettingsService.GetSystemSettingsAsync();
+    }
+
+    private async Task CreateOrdersAsync()
+    {
+        statusMessage = await ModOrdersService.CreateRandomOrdersAsync(request.OrderCount);
+    }
+
+    private sealed class CreateOrdersRequest
+    {
+        public short OrderCount { get; set; } = 10;
+    }
+}

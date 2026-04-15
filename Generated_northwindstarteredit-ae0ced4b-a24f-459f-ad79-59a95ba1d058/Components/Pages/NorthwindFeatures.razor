@@ -1,0 +1,40 @@
+@page "/northwind-features"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+
+<div class="card shadow-sm access-form access-northwind-features">
+    <div class="card-header">Northwind Features</div>
+    <div class="card-body">
+        @* TODO: Missing dedicated service method for query "NorthwindFeatures". Wire service retrieval when available. *@
+        <div class="alert alert-warning py-2">Feature list service binding is pending.</div>
+
+        <div class="table-responsive">
+            <table class="table table-sm table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Description</th>
+                        <th>Navigation</th>
+                        <th>Learn More</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var feature in features)
+                    {
+                        <tr>
+                            <td>@feature.ItemName</td>
+                            <td>@feature.Description</td>
+                            <td>@feature.Navigation</td>
+                            <td>@feature.LearnMore</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    private readonly List<Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models.NorthwindFeatures> features = [];
+}

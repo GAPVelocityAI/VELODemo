@@ -1,0 +1,108 @@
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject ISystemSettingsService SystemSettingsService
+
+<div class="access-form admin-system-settings card shadow-sm">
+    <div class="card-header">System Settings</div>
+    <div class="card-body">
+        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        {
+            <div class="alert alert-info py-2">@statusMessage</div>
+        }
+
+        <div class="table-responsive mb-3">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in settings)
+                    {
+                        <tr>
+                            <td>@row.SettingID</td>
+                            <td>@row.SettingName</td>
+                            <td>@row.SettingValue</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" tabindex="0" @onclick="() => SelectRow(row)">Edit</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (editModel is not null)
+        {
+            <EditForm Model="editModel" OnValidSubmit="SaveAsync">
+                <DataAnnotationsValidator />
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <label class="form-label">Name</label>
+                        <InputText class="form-control" tabindex="0" @bind-Value="editModel.SettingName" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Value</label>
+                        <InputText class="form-control" tabindex="0" @bind-Value="editModel.SettingValue" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Notes</label>
+                        <InputText class="form-control" tabindex="0" @bind-Value="editModel.Notes" />
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary btn-sm" tabindex="0">Save</button>
+                </div>
+            </EditForm>
+        }
+    </div>
+</div>
+
+@code {
+    private List<SystemSettings> settings = [];
+    private SystemSettings? editModel;
+    private string? statusMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        settings = await SystemSettingsService.GetSystemSettingsAsync();
+        editModel ??= settings.FirstOrDefault() is { } first ? Clone(first) : null;
+    }
+
+    private void SelectRow(SystemSettings row)
+    {
+        editModel = Clone(row);
+    }
+
+    private async Task SaveAsync()
+    {
+        if (editModel is null)
+        {
+            return;
+        }
+
+        await SystemSettingsService.UpdateAsync(editModel);
+        statusMessage = "System setting updated.";
+        await LoadAsync();
+    }
+
+    private static SystemSettings Clone(SystemSettings source)
+    {
+        return new SystemSettings
+        {
+            SettingID = source.SettingID,
+            SettingName = source.SettingName,
+            SettingValue = source.SettingValue,
+            Notes = source.Notes
+        };
+    }
+}

@@ -1,0 +1,253 @@
+@page "/order-details"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Components.Forms
+@inject IOrderService OrderService
+@inject ILookupService LookupService
+@inject IEmployeeService EmployeeService
+@inject IJSRuntime JS
+
+<div class="card shadow-sm mb-3 access-form access-order-details">
+    <div class="card-header">Order Details</div>
+    <div class="card-body">
+        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        {
+            <div class="alert alert-info py-2">@statusMessage</div>
+        }
+
+        <div class="table-responsive mb-3">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Customer ID</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in orders)
+                    {
+                        <tr>
+                            <td>@row.OrderID</td>
+                            <td>@row.OrderDate.ToShortDateString()</td>
+                            <td>@row.CustomerID</td>
+                            <td>@row.StatusID</td>
+                            <td><button class="btn btn-sm btn-outline-primary" tabindex="1" @onclick="() => SelectOrder(row)">Edit</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (selectedOrder is not null)
+        {
+            <EditForm Model="selectedOrder" OnValidSubmit="SaveAsync">
+                <DataAnnotationsValidator />
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Employee</label>
+                        <InputSelect class="form-select" tabindex="2" @bind-Value="selectedOrder.EmployeeID">
+                            @foreach (var employee in employees)
+                            {
+                                <option value="@employee.EmployeeID">@employee.FullNameFNLN</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Customer</label>
+                        <InputSelect class="form-select" tabindex="3" @bind-Value="selectedOrder.CustomerID">
+                            @foreach (var customer in customers)
+                            {
+                                <option value="@customer.CustomerID">@customer.CustomerName</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Status</label>
+                        <InputSelect class="form-select" tabindex="4" @bind-Value="selectedOrder.StatusID" disabled>
+                            @foreach (var status in statuses)
+                            {
+                                <option value="@status.StatusID">@status.StatusName</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Order Date</label>
+                        <InputDate class="form-control" tabindex="5" @bind-Value="selectedOrder.OrderDate" disabled />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Shipped Date</label>
+                        <InputDate TValue="DateTime?" class="form-control" tabindex="6" @bind-Value="selectedOrder.ShippedDate" disabled />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Paid Date</label>
+                        <InputDate TValue="DateTime?" class="form-control" tabindex="7" @bind-Value="selectedOrder.PaidDate" disabled />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Notes</label>
+                        <InputTextArea class="form-control" tabindex="8" @bind-Value="selectedOrder.Notes" />
+                    </div>
+                </div>
+                <div class="mt-3 d-flex gap-2 flex-wrap">
+                    <button type="button" class="btn btn-outline-secondary" tabindex="9" @onclick="AddNew">Add Order</button>
+                    <button type="submit" class="btn btn-primary" tabindex="10">Save</button>
+                    <button type="button" class="btn btn-danger" tabindex="11" @onclick="DeleteAsync" disabled="@(selectedOrder.OrderID == 0)">Delete Order</button>
+                    <button type="button" class="btn btn-outline-success" tabindex="12" @onclick="ShipAsync" disabled="@(selectedOrder.OrderID == 0)">Ship</button>
+                    <button type="button" class="btn btn-outline-success" tabindex="13" @onclick="ReceivePaymentAsync" disabled="@(selectedOrder.OrderID == 0)">Receive Payment</button>
+                    <button type="button" class="btn btn-outline-success" tabindex="14" @onclick="CloseAsync" disabled="@(selectedOrder.OrderID == 0)">Close</button>
+                </div>
+            </EditForm>
+
+            <OrderDetailsSubform OrderID="selectedOrder.OrderID" />
+        }
+    </div>
+</div>
+
+<OrdersMostRecent />
+
+@code {
+    private List<Orders> orders = [];
+    private List<OrderStatusLookupDto> statuses = [];
+    private List<CustomerLookupDto> customers = [];
+    private List<Employees> employees = [];
+    private Orders? selectedOrder;
+    private string? statusMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        statuses = await LookupService.GetOrderStatusLookupAsync();
+        customers = await LookupService.GetCustomerLookupAsync();
+        employees = await EmployeeService.GetEmployeeLookupAsync();
+        await LoadOrdersAsync();
+    }
+
+    private async Task LoadOrdersAsync(int? selectOrderId = null)
+    {
+        orders = await OrderService.GetAllAsync();
+
+        if (orders.Count == 0)
+        {
+            AddNew();
+            return;
+        }
+
+        var source = selectOrderId.HasValue ? orders.FirstOrDefault(o => o.OrderID == selectOrderId.Value) : orders.First();
+        selectedOrder = source is null ? Clone(orders.First()) : Clone(source);
+    }
+
+    private void SelectOrder(Orders row)
+    {
+        selectedOrder = Clone(row);
+    }
+
+    private void AddNew()
+    {
+        selectedOrder = new Orders
+        {
+            OrderDate = DateTime.Today,
+            EmployeeID = employees.FirstOrDefault()?.EmployeeID ?? 0,
+            CustomerID = customers.FirstOrDefault()?.CustomerID ?? 0,
+            StatusID = statuses.FirstOrDefault()?.StatusID ?? 3
+        };
+        statusMessage = "Creating a new order.";
+    }
+
+    private async Task SaveAsync()
+    {
+        if (selectedOrder is null)
+        {
+            return;
+        }
+
+        if (selectedOrder.OrderID == 0)
+        {
+            var created = await OrderService.CreateAsync(selectedOrder);
+            statusMessage = "Order created.";
+            await LoadOrdersAsync(created.OrderID);
+        }
+        else
+        {
+            await OrderService.UpdateAsync(selectedOrder);
+            statusMessage = "Order updated.";
+            await LoadOrdersAsync(selectedOrder.OrderID);
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        if (selectedOrder is null || selectedOrder.OrderID == 0)
+        {
+            return;
+        }
+
+        var confirmed = await JS.InvokeAsync<bool>("confirm", $"Delete order #{selectedOrder.OrderID}?");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        await OrderService.DeleteAsync(selectedOrder.OrderID);
+        statusMessage = "Order deleted.";
+        await LoadOrdersAsync();
+    }
+
+    private async Task ShipAsync()
+    {
+        if (selectedOrder is null || selectedOrder.OrderID == 0)
+        {
+            return;
+        }
+
+        // TODO: Replace numeric status values with shared enum binding when consumed by UI layer.
+        selectedOrder.StatusID = 4; // Shipped
+        selectedOrder.ShippedDate = DateTime.Today;
+        await SaveAsync();
+    }
+
+    private async Task ReceivePaymentAsync()
+    {
+        if (selectedOrder is null || selectedOrder.OrderID == 0)
+        {
+            return;
+        }
+
+        // TODO: Replace numeric status values with shared enum binding when consumed by UI layer.
+        selectedOrder.StatusID = 5; // Paid
+        selectedOrder.PaidDate = DateTime.Today;
+        await SaveAsync();
+    }
+
+    private async Task CloseAsync()
+    {
+        if (selectedOrder is null || selectedOrder.OrderID == 0)
+        {
+            return;
+        }
+
+        // TODO: Replace numeric status values with shared enum binding when consumed by UI layer.
+        selectedOrder.StatusID = 1; // Closed
+        await SaveAsync();
+    }
+
+    private static Orders Clone(Orders source)
+    {
+        return new Orders
+        {
+            OrderID = source.OrderID,
+            EmployeeID = source.EmployeeID,
+            CustomerID = source.CustomerID,
+            OrderDate = source.OrderDate,
+            ShippedDate = source.ShippedDate,
+            PaidDate = source.PaidDate,
+            Notes = source.Notes,
+            StatusID = source.StatusID,
+            AddedBy = source.AddedBy,
+            AddedOn = source.AddedOn,
+            ModifiedBy = source.ModifiedBy,
+            ModifiedOn = source.ModifiedOn
+        };
+    }
+}

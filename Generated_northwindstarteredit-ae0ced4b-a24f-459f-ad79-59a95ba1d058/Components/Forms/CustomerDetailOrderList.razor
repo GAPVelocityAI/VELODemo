@@ -1,0 +1,46 @@
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject IOrderService OrderService
+
+<div class="access-form customer-detail-order-list card shadow-sm">
+    <div class="card-header">Customer Orders (@orders.Count)</div>
+    <div class="card-body table-responsive">
+        <table class="table table-sm table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in orders)
+                {
+                    <tr>
+                        <td>@order.OrderID</td>
+                        <td>@order.OrderDate.ToShortDateString()</td>
+                        <td>@order.StatusName</td>
+                        <td>@order.OrderTotal?.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int CustomerID { get; set; }
+
+    private List<OrderListDto> orders = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var allOrders = await OrderService.GetOrdersAsync();
+        orders = allOrders
+            .Where(o => o.CustomerID == CustomerID)
+            .OrderByDescending(o => o.OrderDate)
+            .Take(50)
+            .ToList();
+    }
+}

@@ -1,0 +1,931 @@
+/* /Components/Layout/MainLayout.razor.rz.scp.css */
+.page[b-jn299y10k8] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-jn299y10k8] {
+    flex: 1;
+}
+
+.sidebar[b-jn299y10k8] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-jn299y10k8] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-jn299y10k8]  a, .top-row[b-jn299y10k8]  .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+        text-decoration: none;
+    }
+
+    .top-row[b-jn299y10k8]  a:hover, .top-row[b-jn299y10k8]  .btn-link:hover {
+        text-decoration: underline;
+    }
+
+    .top-row[b-jn299y10k8]  a:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row[b-jn299y10k8] {
+        justify-content: space-between;
+    }
+
+    .top-row[b-jn299y10k8]  a, .top-row[b-jn299y10k8]  .btn-link {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-jn299y10k8] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-jn299y10k8] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-jn299y10k8] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row.auth[b-jn299y10k8]  a:first-child {
+        flex: 1;
+        text-align: right;
+        width: 0;
+    }
+
+    .top-row[b-jn299y10k8], article[b-jn299y10k8] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+
+#blazor-error-ui[b-jn299y10k8] {
+    color-scheme: light only;
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss[b-jn299y10k8] {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+/* /Components/Layout/NavMenu.razor.rz.scp.css */
+/* Supplementary scoped styles — critical styles are in global app.css */
+
+/* Icon sizing inside nav links */
+.nav-link .bi[b-spc2v6mhih] {
+    font-size: 1.1rem;
+    width: 1.25rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Active icon glow */
+.nav-link.active .bi[b-spc2v6mhih] {
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.4));
+}
+
+/* Section header icon sizing */
+.nav-section-header .bi[b-spc2v6mhih] {
+    font-size: 0.75rem;
+}
+
+
+/* /Components/Layout/ReconnectModal.razor.rz.scp.css */
+.components-reconnect-first-attempt-visible[b-nef1h0xueb],
+.components-reconnect-repeated-attempt-visible[b-nef1h0xueb],
+.components-reconnect-failed-visible[b-nef1h0xueb],
+.components-pause-visible[b-nef1h0xueb],
+.components-resume-failed-visible[b-nef1h0xueb],
+.components-rejoining-animation[b-nef1h0xueb] {
+    display: none;
+}
+
+#components-reconnect-modal.components-reconnect-show .components-reconnect-first-attempt-visible[b-nef1h0xueb],
+#components-reconnect-modal.components-reconnect-show .components-rejoining-animation[b-nef1h0xueb],
+#components-reconnect-modal.components-reconnect-paused .components-pause-visible[b-nef1h0xueb],
+#components-reconnect-modal.components-reconnect-resume-failed .components-resume-failed-visible[b-nef1h0xueb],
+#components-reconnect-modal.components-reconnect-retrying[b-nef1h0xueb],
+#components-reconnect-modal.components-reconnect-retrying .components-reconnect-repeated-attempt-visible[b-nef1h0xueb],
+#components-reconnect-modal.components-reconnect-retrying .components-rejoining-animation[b-nef1h0xueb],
+#components-reconnect-modal.components-reconnect-failed[b-nef1h0xueb],
+#components-reconnect-modal.components-reconnect-failed .components-reconnect-failed-visible[b-nef1h0xueb] {
+    display: block;
+}
+
+
+#components-reconnect-modal[b-nef1h0xueb] {
+    background-color: white;
+    width: 20rem;
+    margin: 20vh auto;
+    padding: 2rem;
+    border: 0;
+    border-radius: 0.5rem;
+    box-shadow: 0 3px 6px 2px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: display 0.5s allow-discrete, overlay 0.5s allow-discrete;
+    animation: components-reconnect-modal-fadeOutOpacity-b-nef1h0xueb 0.5s both;
+    &[open]
+
+{
+    animation: components-reconnect-modal-slideUp-b-nef1h0xueb 1.5s cubic-bezier(.05, .89, .25, 1.02) 0.3s, components-reconnect-modal-fadeInOpacity-b-nef1h0xueb 0.5s ease-in-out 0.3s;
+    animation-fill-mode: both;
+}
+
+}
+
+#components-reconnect-modal[b-nef1h0xueb]::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+    animation: components-reconnect-modal-fadeInOpacity-b-nef1h0xueb 0.5s ease-in-out;
+    opacity: 1;
+}
+
+@keyframes components-reconnect-modal-slideUp-b-nef1h0xueb {
+    0% {
+        transform: translateY(30px) scale(0.95);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes components-reconnect-modal-fadeInOpacity-b-nef1h0xueb {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes components-reconnect-modal-fadeOutOpacity-b-nef1h0xueb {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.components-reconnect-container[b-nef1h0xueb] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#components-reconnect-modal p[b-nef1h0xueb] {
+    margin: 0;
+    text-align: center;
+}
+
+#components-reconnect-modal button[b-nef1h0xueb] {
+    border: 0;
+    background-color: #6b9ed2;
+    color: white;
+    padding: 4px 24px;
+    border-radius: 4px;
+}
+
+    #components-reconnect-modal button:hover[b-nef1h0xueb] {
+        background-color: #3b6ea2;
+    }
+
+    #components-reconnect-modal button:active[b-nef1h0xueb] {
+        background-color: #6b9ed2;
+    }
+
+.components-rejoining-animation[b-nef1h0xueb] {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+    .components-rejoining-animation div[b-nef1h0xueb] {
+        position: absolute;
+        border: 3px solid #0087ff;
+        opacity: 1;
+        border-radius: 50%;
+        animation: components-rejoining-animation-b-nef1h0xueb 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+
+        .components-rejoining-animation div:nth-child(2)[b-nef1h0xueb] {
+            animation-delay: -0.5s;
+        }
+
+@keyframes components-rejoining-animation-b-nef1h0xueb {
+    0% {
+        top: 40px;
+        left: 40px;
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    4.9% {
+        top: 40px;
+        left: 40px;
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    5% {
+        top: 40px;
+        left: 40px;
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+
+    100% {
+        top: 0px;
+        left: 0px;
+        width: 80px;
+        height: 80px;
+        opacity: 0;
+    }
+}
+/* /Components/Pages/About.razor.rz.scp.css */
+.access-form.access-about[b-mpzn59np6t] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 9in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-color-neg2147483630);
+}
+
+.access-form.access-about .card-header[b-mpzn59np6t] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-about[b-mpzn59np6t],
+.access-form.access-about .card[b-mpzn59np6t] {
+    border-color: var(--access-color-15064278);
+}
+
+.access-form.access-about .btn-primary[b-mpzn59np6t] {
+    background-color: var(--access-color-12673797);
+    border-color: var(--access-color-12673797);
+}
+/* /Components/Pages/Admin.razor.rz.scp.css */
+.access-form.access-admin[b-h79a79ia4k] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 11.21in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-color-neg2147483630);
+}
+
+.access-form.access-admin .card-header[b-h79a79ia4k] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-admin[b-h79a79ia4k],
+.access-form.access-admin .card[b-h79a79ia4k] {
+    border-color: var(--access-color-15064278);
+}
+
+.access-form.access-admin .btn-outline-primary[b-h79a79ia4k] {
+    color: var(--access-color-12673797);
+    border-color: var(--access-color-12673797);
+}
+/* /Components/Pages/AdminDeleteTestData.razor.rz.scp.css */
+.access-form.access-admin-delete-test-data[b-ngm2t4i398] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 5.46in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-admin-delete-test-data .card-header[b-ngm2t4i398] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-admin-delete-test-data[b-ngm2t4i398],
+.access-form.access-admin-delete-test-data .card[b-ngm2t4i398] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/AdminInternetOrders.razor.rz.scp.css */
+.access-form.access-admin-internet-orders[b-y1jaocqnex] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 5.46in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-admin-internet-orders .card-header[b-y1jaocqnex] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-admin-internet-orders[b-y1jaocqnex],
+.access-form.access-admin-internet-orders .card[b-y1jaocqnex] {
+    border-color: var(--access-color-15064278);
+}
+
+.access-form.access-admin-internet-orders .btn-primary[b-y1jaocqnex] {
+    background-color: var(--access-color-12673797);
+    border-color: var(--access-color-12673797);
+}
+/* /Components/Pages/AdminResetDates.razor.rz.scp.css */
+.access-form.access-admin-reset-dates[b-jn5ya7ijym] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 5.46in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-admin-reset-dates .card-header[b-jn5ya7ijym] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-admin-reset-dates[b-jn5ya7ijym],
+.access-form.access-admin-reset-dates .card[b-jn5ya7ijym] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/Credentials.razor.rz.scp.css */
+.access-form.access-credentials[b-d3dja341wc] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 7.94in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-color-neg2147483630);
+}
+
+.access-form.access-credentials .card-header[b-d3dja341wc] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-credentials[b-d3dja341wc],
+.access-form.access-credentials .card[b-d3dja341wc] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/CustomerDetail.razor.rz.scp.css */
+.access-form.access-customer-detail[b-qz7sykifv5] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 12.75in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-customer-detail .card-header[b-qz7sykifv5] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-customer-detail[b-qz7sykifv5],
+.access-form.access-customer-detail .card[b-qz7sykifv5] {
+    border-color: var(--access-color-15064278);
+}
+
+.access-form.access-customer-detail .table thead th[b-qz7sykifv5] {
+    color: var(--access-color-4210752);
+}
+/* /Components/Pages/CustomerList.razor.rz.scp.css */
+.access-form.access-customer-list[b-dparozu9do] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 12.75in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-customer-list .card-header[b-dparozu9do] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-customer-list[b-dparozu9do],
+.access-form.access-customer-list .card[b-dparozu9do] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/EmployeeDetail.razor.rz.scp.css */
+.access-form.access-employee-detail[b-yy34h960qb] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 12.71in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-employee-detail .card-header[b-yy34h960qb] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-employee-detail[b-yy34h960qb],
+.access-form.access-employee-detail .card[b-yy34h960qb] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/Login.razor.rz.scp.css */
+.access-form.access-login[b-ywk7bdq5cn] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 5.98in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+    color: var(--access-color-neg2147483630);
+}
+
+.access-form.access-login .card[b-ywk7bdq5cn] {
+    border-color: var(--access-color-15064278);
+}
+
+.access-form.access-login .card-header[b-ywk7bdq5cn] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-login .btn-primary[b-ywk7bdq5cn] {
+    background-color: var(--access-color-12673797);
+    border-color: var(--access-color-12673797);
+}
+/* /Components/Pages/MainMenu.razor.rz.scp.css */
+.access-form.access-main-menu[b-pvddq6gjbe] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 11in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-main-menu .card-header[b-pvddq6gjbe] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-main-menu[b-pvddq6gjbe],
+.access-form.access-main-menu .card[b-pvddq6gjbe] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/MainMenuLearn.razor.rz.scp.css */
+.access-form.access-main-menu-learn[b-czssuh6ykz] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 8in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-main-menu-learn .card-header[b-czssuh6ykz] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-main-menu-learn[b-czssuh6ykz],
+.access-form.access-main-menu-learn .card[b-czssuh6ykz] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/MainMenuProductList.razor.rz.scp.css */
+.access-form.access-main-menu-product-list[b-fhtot7pu9f] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 7.63in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-main-menu-product-list .card-header[b-fhtot7pu9f] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-main-menu-product-list[b-fhtot7pu9f],
+.access-form.access-main-menu-product-list .card[b-fhtot7pu9f] {
+    border-color: var(--access-color-15064278);
+}
+
+.access-form.access-main-menu-product-list .btn-primary[b-fhtot7pu9f] {
+    background-color: var(--access-color-12673797);
+    border-color: var(--access-color-12673797);
+}
+/* /Components/Pages/MainMenuReports.razor.rz.scp.css */
+.access-form.access-main-menu-reports[b-7d4y79ygta] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 6in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-main-menu-reports .card-header[b-7d4y79ygta] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-main-menu-reports[b-7d4y79ygta],
+.access-form.access-main-menu-reports .card[b-7d4y79ygta] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/NorthwindFeatures.razor.rz.scp.css */
+.access-form.access-northwind-features[b-pv4h8dku4f] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 7in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-northwind-features .card-header[b-pv4h8dku4f] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-northwind-features[b-pv4h8dku4f],
+.access-form.access-northwind-features .card[b-pv4h8dku4f] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/OrderDetails.razor.rz.scp.css */
+.access-form.access-order-details[b-5fyuho9jl5] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 12.75in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-order-details .card-header[b-5fyuho9jl5] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-order-details[b-5fyuho9jl5],
+.access-form.access-order-details .card[b-5fyuho9jl5] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/OrdersByCustomer.razor.rz.scp.css */
+.access-form.access-orders-by-customer[b-y1wzj6btit] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 4.88in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-orders-by-customer .card-header[b-y1wzj6btit] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-orders-by-customer[b-y1wzj6btit],
+.access-form.access-orders-by-customer .card[b-y1wzj6btit] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/ProductDetail.razor.rz.scp.css */
+.access-form.access-product-detail[b-disyct8c8l] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 10.38in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-product-detail .card-header[b-disyct8c8l] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-product-detail[b-disyct8c8l],
+.access-form.access-product-detail .card[b-disyct8c8l] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/Startup.razor.rz.scp.css */
+.access-form.access-startup[b-875cfk2box] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 6.5in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-startup .card-header[b-875cfk2box] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-startup[b-875cfk2box],
+.access-form.access-startup .card[b-875cfk2box] {
+    border-color: var(--access-color-15064278);
+}
+/* /Components/Pages/Welcome.razor.rz.scp.css */
+.access-form.access-welcome[b-ok69831om5] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 9.83in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-welcome .card-header[b-ok69831om5] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-welcome[b-ok69831om5],
+.access-form.access-welcome .card[b-ok69831om5] {
+    border-color: var(--access-color-15064278);
+}

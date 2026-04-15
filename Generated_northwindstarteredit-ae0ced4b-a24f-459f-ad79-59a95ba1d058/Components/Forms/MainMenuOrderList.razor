@@ -1,0 +1,97 @@
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject IOrderService OrderService
+
+<div class="access-form main-menu-order-list card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Orders</span>
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-outline-secondary" tabindex="0" @onclick='() => ChangeFilter("open")'>Open Orders</button>
+            <button class="btn btn-outline-secondary" tabindex="0" @onclick='() => ChangeFilter("recent")'>Recent Orders</button>
+            <button class="btn btn-outline-secondary" tabindex="0" @onclick='() => ChangeFilter("mine")'>My Orders</button>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (currentFilter == "mine")
+        {
+            <EditForm Model="filterModel" OnValidSubmit="LoadAsync">
+                <DataAnnotationsValidator />
+                <div class="row g-2 mb-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Employee ID</label>
+                        <InputNumber class="form-control form-control-sm" tabindex="0" @bind-Value="filterModel.EmployeeId" />
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-sm btn-primary" tabindex="0">Apply</button>
+                    </div>
+                </div>
+            </EditForm>
+        }
+
+        <div class="table-responsive">
+            <table class="table table-sm table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in orders)
+                    {
+                        <tr>
+                            <td>@order.OrderID</td>
+                            <td>@order.OrderDate.ToShortDateString()</td>
+                            <td>@order.CustomerName</td>
+                            <td>@order.StatusName</td>
+                            <td>@order.OrderTotal?.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="text-muted mt-2">Showing @orders.Count order(s).</div>
+    </div>
+</div>
+
+@code {
+    private List<OrderListDto> orders = [];
+    private string currentFilter = "open";
+    private FilterModel filterModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task ChangeFilter(string filter)
+    {
+        currentFilter = filter;
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        if (currentFilter == "mine" && filterModel.EmployeeId > 0)
+        {
+            orders = await OrderService.GetMostRecentOrdersByEmployeeAsync(filterModel.EmployeeId);
+            return;
+        }
+
+        var allOrders = await OrderService.GetOrdersAsync();
+        orders = currentFilter switch
+        {
+            "open" => allOrders.Where(o => o.StatusID != 1).OrderByDescending(o => o.OrderDate).Take(100).ToList(),
+            "recent" => allOrders.OrderByDescending(o => o.OrderDate).Take(100).ToList(),
+            _ => allOrders.OrderByDescending(o => o.OrderDate).Take(100).ToList()
+        };
+    }
+
+    private sealed class FilterModel
+    {
+        public int EmployeeId { get; set; }
+    }
+}

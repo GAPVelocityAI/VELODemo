@@ -1,0 +1,14 @@
+@page "/about"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject NavigationManager Navigation
+
+<div class="card shadow-sm access-form access-about">
+    <div class="card-header">About Northwind Starter</div>
+    <div class="card-body">
+        @* TODO: Add dedicated service/query method for Welcome/About content if data-bound content is required. *@
+        <p class="mb-3">This sample app demonstrates customers, orders, products, reporting, and workflow actions in a Blazor-friendly structure.</p>
+        <button class="btn btn-primary" tabindex="1" @onclick='() => Navigation.NavigateTo("/main-menu")'>Close</button>
+    </div>
+</div>

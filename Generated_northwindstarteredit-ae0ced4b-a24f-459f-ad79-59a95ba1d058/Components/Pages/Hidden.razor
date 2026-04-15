@@ -1,0 +1,16 @@
+@page "/hidden"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject NavigationManager Navigation
+
+<div class="card shadow-sm">
+    <div class="card-header">Hidden</div>
+    <div class="card-body">
+        <p class="text-muted mb-3">This is a utility/navigation container page from Access.</p>
+        <div class="d-flex gap-2">
+            <button class="btn btn-primary" @onclick='() => Navigation.NavigateTo("/startup")'>Go to Startup</button>
+            <button class="btn btn-outline-secondary" @onclick='() => Navigation.NavigateTo("/main-menu")'>Go to Main Menu</button>
+        </div>
+    </div>
+</div>

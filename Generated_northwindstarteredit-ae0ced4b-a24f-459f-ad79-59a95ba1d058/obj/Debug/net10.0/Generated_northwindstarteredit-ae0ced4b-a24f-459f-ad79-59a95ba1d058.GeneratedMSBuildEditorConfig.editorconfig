@@ -1,0 +1,183 @@
+is_global = true
+build_property.TargetFramework = net10.0
+build_property.TargetFramework = net10.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v10.0
+build_property.RootNamespace = Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058
+build_property.RootNamespace = Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058
+build_property.ProjectDir = C:\Users\KenderAlexanderCalde\Desktop\VELODemo\Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\KenderAlexanderCalde\Desktop\VELODemo\Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 10.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/App.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Forms/AdminSystemSettings.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3Jtc1xBZG1pblN5c3RlbVNldHRpbmdzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Forms/CustomerDetailOrderList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3Jtc1xDdXN0b21lckRldGFpbE9yZGVyTGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Forms/CustomerDetailProductList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3Jtc1xDdXN0b21lckRldGFpbFByb2R1Y3RMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Forms/EmployeeDetailOrderList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3Jtc1xFbXBsb3llZURldGFpbE9yZGVyTGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Forms/MainMenuOrderList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3Jtc1xNYWluTWVudU9yZGVyTGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Forms/OrderDetailsSubform.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3Jtc1xPcmRlckRldGFpbHNTdWJmb3JtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Forms/OrdersMostRecent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3Jtc1xPcmRlcnNNb3N0UmVjZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Forms/ProductDetailOrderList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGb3Jtc1xQcm9kdWN0RGV0YWlsT3JkZXJMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/Hidden.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIaWRkZW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/NotFound.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xOb3RGb3VuZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-jn299y10k8
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-spc2v6mhih
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Layout/ReconnectModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcUmVjb25uZWN0TW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-nef1h0xueb
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/About.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBYm91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-mpzn59np6t
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/Admin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-h79a79ia4k
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/AdminDeleteTestData.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pbkRlbGV0ZVRlc3REYXRhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ngm2t4i398
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/AdminInternetOrders.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pbkludGVybmV0T3JkZXJzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-y1jaocqnex
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/AdminResetDates.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblJlc2V0RGF0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-jn5ya7ijym
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/Credentials.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDcmVkZW50aWFscy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-d3dja341wc
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/CustomerDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDdXN0b21lckRldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-qz7sykifv5
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/CustomerList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDdXN0b21lckxpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-dparozu9do
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/EmployeeDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbXBsb3llZURldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-yy34h960qb
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-ywk7bdq5cn
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/MainMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNYWluTWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-pvddq6gjbe
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/MainMenuLearn.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNYWluTWVudUxlYXJuLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-czssuh6ykz
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/MainMenuProductList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNYWluTWVudVByb2R1Y3RMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-fhtot7pu9f
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/MainMenuReports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNYWluTWVudVJlcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-7d4y79ygta
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/NorthwindFeatures.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xOb3J0aHdpbmRGZWF0dXJlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-pv4h8dku4f
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/OrderDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xPcmRlckRldGFpbHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-5fyuho9jl5
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/OrdersByCustomer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xPcmRlcnNCeUN1c3RvbWVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-y1wzj6btit
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/ProductDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9kdWN0RGV0YWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-disyct8c8l
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/Startup.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdGFydHVwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-875cfk2box
+
+[C:/Users/KenderAlexanderCalde/Desktop/VELODemo/Generated_northwindstarteredit-ae0ced4b-a24f-459f-ad79-59a95ba1d058/Components/Pages/Welcome.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXZWxjb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ok69831om5

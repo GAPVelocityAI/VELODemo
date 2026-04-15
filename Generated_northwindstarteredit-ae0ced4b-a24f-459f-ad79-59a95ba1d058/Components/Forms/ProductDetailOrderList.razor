@@ -1,0 +1,47 @@
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject IOrderService OrderService
+
+<div class="card shadow-sm mt-3">
+    <div class="card-header">Product Orders (@orders.Count)</div>
+    <div class="card-body table-responsive">
+        <table class="table table-sm table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Extended Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in orders)
+                {
+                    <tr>
+                        <td>@row.OrderID</td>
+                        <td>@row.OrderDate.ToShortDateString()</td>
+                        <td>@row.Quantity</td>
+                        <td>@row.UnitPrice.ToString("C")</td>
+                        <td>@row.ExtendedPrice.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int ProductID { get; set; }
+
+    private List<ProductOrderDto> orders = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var allRows = await OrderService.GetProductOrdersAsync();
+        orders = allRows
+            .Where(x => x.ProductID == ProductID)
+            .OrderByDescending(x => x.OrderDate)
+            .ToList();
+    }
+}

@@ -1,0 +1,236 @@
+@page "/customer-detail"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Components.Forms
+@inject ICustomerService CustomerService
+@inject IJSRuntime JS
+
+<div class="card shadow-sm mb-3 access-form access-customer-detail">
+    <div class="card-header">Customer Detail</div>
+    <div class="card-body">
+        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        {
+            <div class="alert alert-info py-2">@statusMessage</div>
+        }
+
+        <div class="table-responsive mb-3">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>City</th>
+                        <th>Phone</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var customer in customers)
+                    {
+                        <tr>
+                            <td>@customer.CustomerID</td>
+                            <td>@customer.CustomerName</td>
+                            <td>@customer.City</td>
+                            <td>@customer.BusinessPhone</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" tabindex="1" @onclick="() => SelectCustomer(customer)">Edit</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (selectedCustomer is not null)
+        {
+            <EditForm Model="selectedCustomer" OnValidSubmit="SaveAsync">
+                <DataAnnotationsValidator />
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Customer Name</label>
+                        <InputText class="form-control" tabindex="2" @bind-Value="selectedCustomer.CustomerName" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Primary Contact First</label>
+                        <InputText class="form-control" tabindex="3" @bind-Value="selectedCustomer.PrimaryContactFirstName" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Primary Contact Last</label>
+                        <InputText class="form-control" tabindex="4" @bind-Value="selectedCustomer.PrimaryContactLastName" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Address</label>
+                        <InputText class="form-control" tabindex="5" @bind-Value="selectedCustomer.Address" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">City</label>
+                        <InputText class="form-control" tabindex="6" @bind-Value="selectedCustomer.City" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">State</label>
+                        <InputText class="form-control" tabindex="7" @bind-Value="selectedCustomer.State" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Zip</label>
+                        <InputText class="form-control" tabindex="8" @bind-Value="selectedCustomer.Zip" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Business Phone</label>
+                        <InputText class="form-control" tabindex="9" @bind-Value="selectedCustomer.BusinessPhone" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <InputText class="form-control" tabindex="10" @bind-Value="selectedCustomer.PrimaryContactEmailAddress" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Website</label>
+                        <InputText class="form-control" tabindex="11" @bind-Value="selectedCustomer.Website" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Notes</label>
+                        <InputTextArea class="form-control" tabindex="12" @bind-Value="selectedCustomer.Notes" />
+                    </div>
+                </div>
+                <div class="mt-3 d-flex gap-2">
+                    @if (showAddCustomerButton)
+                    {
+                        <button type="button" class="btn btn-outline-secondary" tabindex="13" @onclick="AddNew">Add Customer</button>
+                    }
+                    @if (showEmailListButton)
+                    {
+                        <button type="button" class="btn btn-outline-info" tabindex="14" disabled>Email List</button>
+                    }
+                    <button type="submit" class="btn btn-primary" tabindex="15">Save</button>
+                    @if (showDeleteCustomerButton)
+                    {
+                        <button type="button" class="btn btn-danger" tabindex="16" @onclick="DeleteAsync" disabled="@(selectedCustomer.CustomerID == 0)">Delete Customer</button>
+                    }
+                </div>
+            </EditForm>
+        }
+    </div>
+</div>
+
+@if (selectedCustomer is not null)
+{
+    <CustomerDetailOrderList CustomerID="selectedCustomer.CustomerID" />
+    <div class="mt-3"></div>
+    <CustomerDetailProductList CustomerID="selectedCustomer.CustomerID" />
+}
+
+@code {
+    private List<Customers> customers = [];
+    private Customers? selectedCustomer;
+    private string? statusMessage;
+    private bool showAddCustomerButton = false;
+    private bool showEmailListButton = false;
+    private bool showDeleteCustomerButton = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync(int? selectId = null)
+    {
+        customers = await CustomerService.GetAllAsync();
+
+        if (customers.Count == 0)
+        {
+            selectedCustomer = new Customers
+            {
+                CustomerName = string.Empty,
+                Address = string.Empty,
+                City = string.Empty,
+                State = string.Empty,
+                Zip = string.Empty
+            };
+            return;
+        }
+
+        var selected = selectId.HasValue ? customers.FirstOrDefault(c => c.CustomerID == selectId.Value) : customers.First();
+        selectedCustomer = selected is null ? customers.First() : Clone(selected);
+    }
+
+    private void SelectCustomer(Customers customer)
+    {
+        selectedCustomer = Clone(customer);
+    }
+
+    private void AddNew()
+    {
+        selectedCustomer = new Customers
+        {
+            CustomerName = string.Empty,
+            Address = string.Empty,
+            City = string.Empty,
+            State = string.Empty,
+            Zip = string.Empty
+        };
+        statusMessage = "Creating a new customer.";
+    }
+
+    private async Task SaveAsync()
+    {
+        if (selectedCustomer is null)
+        {
+            return;
+        }
+
+        if (selectedCustomer.CustomerID == 0)
+        {
+            var created = await CustomerService.CreateAsync(selectedCustomer);
+            statusMessage = "Customer created.";
+            await LoadAsync(created.CustomerID);
+        }
+        else
+        {
+            await CustomerService.UpdateAsync(selectedCustomer);
+            statusMessage = "Customer updated.";
+            await LoadAsync(selectedCustomer.CustomerID);
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        if (selectedCustomer is null || selectedCustomer.CustomerID == 0)
+        {
+            return;
+        }
+
+        var confirmed = await JS.InvokeAsync<bool>("confirm", $"Delete customer '{selectedCustomer.CustomerName}'?");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        await CustomerService.DeleteAsync(selectedCustomer.CustomerID);
+        statusMessage = "Customer deleted.";
+        await LoadAsync();
+    }
+
+    private static Customers Clone(Customers source)
+    {
+        return new Customers
+        {
+            CustomerID = source.CustomerID,
+            CustomerName = source.CustomerName,
+            PrimaryContactLastName = source.PrimaryContactLastName,
+            PrimaryContactFirstName = source.PrimaryContactFirstName,
+            PrimaryContactJobTitle = source.PrimaryContactJobTitle,
+            PrimaryContactEmailAddress = source.PrimaryContactEmailAddress,
+            BusinessPhone = source.BusinessPhone,
+            Address = source.Address,
+            City = source.City,
+            State = source.State,
+            Zip = source.Zip,
+            Website = source.Website,
+            Notes = source.Notes,
+            AddedBy = source.AddedBy,
+            AddedOn = source.AddedOn,
+            ModifiedBy = source.ModifiedBy,
+            ModifiedOn = source.ModifiedOn
+        };
+    }
+}

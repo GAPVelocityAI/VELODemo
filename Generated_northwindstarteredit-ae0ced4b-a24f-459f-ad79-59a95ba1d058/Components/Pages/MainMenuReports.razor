@@ -1,0 +1,111 @@
+@page "/main-menu-reports"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject IReportService ReportService
+
+<div class="card shadow-sm access-form access-main-menu-reports">
+    <div class="card-header">Reports</div>
+    <div class="card-body">
+        <EditForm Model="filters">
+            <DataAnnotationsValidator />
+            <div class="row g-2 align-items-end mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Start Date</label>
+                    <InputDate class="form-control" tabindex="1" @bind-Value="filters.StartDate" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">End Date</label>
+                    <InputDate class="form-control" tabindex="2" @bind-Value="filters.EndDate" />
+                </div>
+                <div class="col-12 d-flex gap-2 flex-wrap">
+                    <button type="button" class="btn btn-outline-primary" tabindex="3" @onclick="PreviewEmployeeAsync">Preview Employee Report</button>
+                    <button type="button" class="btn btn-outline-primary" tabindex="4" @onclick="PreviewProductMonthlyAsync">Preview Product Monthly</button>
+                    <button type="button" class="btn btn-outline-primary" tabindex="5" @onclick="PreviewProductQuarterlyAsync">Preview Product Quarterly</button>
+                </div>
+            </div>
+        </EditForm>
+
+        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        {
+            <div class="alert alert-info py-2">@statusMessage</div>
+        }
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="card border-0 bg-light">
+                    <div class="card-body py-2">
+                        <strong>Employee report rows:</strong> @employeeRows.Count
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 bg-light">
+                    <div class="card-body py-2">
+                        <strong>Product report rows:</strong> @productRows.Count
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-3">
+            <table class="table table-sm table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Month</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in employeeRows.Take(10))
+                    {
+                        <tr>
+                            <td>@row.FullNameFNLN</td>
+                            <td>@row.MonthYear</td>
+                            <td>@row.OrderTotal.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    private readonly ReportFilters filters = new()
+    {
+        StartDate = DateTime.Today.AddMonths(-1),
+        EndDate = DateTime.Today
+    };
+
+    private List<SalesByEmployeeReportDto> employeeRows = [];
+    private List<SalesByProductReportDto> productRows = [];
+    private string? statusMessage;
+
+    private async Task PreviewEmployeeAsync()
+    {
+        employeeRows = await ReportService.GetSalesByEmployeeReportAsync(filters.StartDate, filters.EndDate);
+        statusMessage = $"Employee report preview returned {employeeRows.Count} row(s).";
+    }
+
+    private async Task PreviewProductMonthlyAsync()
+    {
+        productRows = await ReportService.GetSalesByProductReportAsync(filters.StartDate, filters.EndDate);
+        statusMessage = $"Product monthly report preview returned {productRows.Count} row(s).";
+    }
+
+    private async Task PreviewProductQuarterlyAsync()
+    {
+        var rows = await ReportService.GetSalesByProductReportAsync(filters.StartDate, filters.EndDate);
+        productRows = rows.OrderBy(r => r.QuarterYear).ThenBy(r => r.ProductName).ToList();
+        var quarterCount = productRows.Select(r => r.QuarterYear).Distinct().Count();
+        statusMessage = $"Product quarterly report preview returned {productRows.Count} row(s) across {quarterCount} quarter(s).";
+    }
+
+    private sealed class ReportFilters
+    {
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+    }
+}

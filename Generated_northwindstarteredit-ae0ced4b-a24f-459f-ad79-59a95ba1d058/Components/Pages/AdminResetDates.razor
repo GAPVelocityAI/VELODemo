@@ -1,0 +1,35 @@
+@page "/admin-reset-dates"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject IModOrdersService ModOrdersService
+@inject IJSRuntime JS
+
+<div class="card shadow-sm access-form access-admin-reset-dates">
+    <div class="card-header">Reset Dates</div>
+    <div class="card-body">
+        <p class="text-muted">Adjusts stored date values to align with the current date range.</p>
+        <button class="btn btn-warning" tabindex="1" @onclick="ResetDatesAsync">Reset Dates</button>
+
+        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        {
+            <div class="alert alert-info py-2 mt-3">@statusMessage</div>
+        }
+    </div>
+</div>
+
+@code {
+    private string? statusMessage;
+
+    private async Task ResetDatesAsync()
+    {
+        var confirmed = await JS.InvokeAsync<bool>("confirm", "Reset all date values to current ranges?");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        await ModOrdersService.SetDatesToCurrentAsync();
+        statusMessage = "Dates were reset successfully.";
+    }
+}

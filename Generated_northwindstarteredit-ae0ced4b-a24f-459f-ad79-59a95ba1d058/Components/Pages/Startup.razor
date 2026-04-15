@@ -1,0 +1,16 @@
+@page "/startup"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject NavigationManager Navigation
+
+<div class="card shadow-sm access-form access-startup">
+    <div class="card-header">Startup</div>
+    <div class="card-body">
+        <p>This startup page routes users into the welcome and main menu flow.</p>
+        <div class="d-flex gap-2">
+            <button class="btn btn-primary" tabindex="1" @onclick='() => Navigation.NavigateTo("/welcome")'>Open Welcome</button>
+            <button class="btn btn-outline-secondary" tabindex="2" @onclick='() => Navigation.NavigateTo("/main-menu")'>Skip to Main Menu</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,170 @@
+@page "/product-detail"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Components.Forms
+@inject IProductService ProductService
+@inject IJSRuntime JS
+
+<div class="card shadow-sm mb-3 access-form access-product-detail">
+    <div class="card-header">Product Detail</div>
+    <div class="card-body">
+        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        {
+            <div class="alert alert-info py-2">@statusMessage</div>
+        }
+
+        <div class="table-responsive mb-3">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in products)
+                    {
+                        <tr>
+                            <td>@product.ProductID</td>
+                            <td>@product.ProductCode</td>
+                            <td>@product.ProductName</td>
+                            <td>@product.UnitPrice.ToString("C")</td>
+                            <td><button class="btn btn-sm btn-outline-primary" tabindex="1" @onclick="() => SelectProduct(product)">Edit</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (selectedProduct is not null)
+        {
+            <EditForm Model="selectedProduct" OnValidSubmit="SaveAsync">
+                <DataAnnotationsValidator />
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Product Code</label>
+                        <InputText class="form-control" tabindex="2" @bind-Value="selectedProduct.ProductCode" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Product Name</label>
+                        <InputText class="form-control" tabindex="3" @bind-Value="selectedProduct.ProductName" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Unit Price</label>
+                        <InputNumber class="form-control" tabindex="4" @bind-Value="selectedProduct.UnitPrice" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Description</label>
+                        <InputTextArea class="form-control" tabindex="5" @bind-Value="selectedProduct.ProductDescription" />
+                    </div>
+                </div>
+                <div class="mt-3 d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary" tabindex="6" @onclick="AddNew">Add Product</button>
+                    <button type="submit" class="btn btn-primary" tabindex="7">Save</button>
+                    <button type="button" class="btn btn-danger" tabindex="8" @onclick="DeleteAsync" disabled="@(selectedProduct.ProductID == 0)">Delete Product</button>
+                </div>
+            </EditForm>
+
+            <ProductDetailOrderList ProductID="selectedProduct.ProductID" />
+        }
+    </div>
+</div>
+
+@code {
+    private List<Products> products = [];
+    private Products? selectedProduct;
+    private string? statusMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync(int? selectedId = null)
+    {
+        products = await ProductService.GetProductDetailAsync();
+
+        if (products.Count == 0)
+        {
+            AddNew();
+            return;
+        }
+
+        var row = selectedId.HasValue ? products.FirstOrDefault(p => p.ProductID == selectedId.Value) : products.First();
+        selectedProduct = row is null ? Clone(products.First()) : Clone(row);
+    }
+
+    private void SelectProduct(Products source)
+    {
+        selectedProduct = Clone(source);
+    }
+
+    private void AddNew()
+    {
+        selectedProduct = new Products
+        {
+            ProductCode = string.Empty,
+            ProductName = string.Empty
+        };
+        statusMessage = "Creating a new product.";
+    }
+
+    private async Task SaveAsync()
+    {
+        if (selectedProduct is null)
+        {
+            return;
+        }
+
+        if (selectedProduct.ProductID == 0)
+        {
+            var created = await ProductService.CreateAsync(selectedProduct);
+            statusMessage = "Product created.";
+            await LoadAsync(created.ProductID);
+        }
+        else
+        {
+            await ProductService.UpdateAsync(selectedProduct);
+            statusMessage = "Product updated.";
+            await LoadAsync(selectedProduct.ProductID);
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        if (selectedProduct is null || selectedProduct.ProductID == 0)
+        {
+            return;
+        }
+
+        var confirmed = await JS.InvokeAsync<bool>("confirm", $"Delete product '{selectedProduct.ProductName}'?");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        await ProductService.DeleteAsync(selectedProduct.ProductID);
+        statusMessage = "Product deleted.";
+        await LoadAsync();
+    }
+
+    private static Products Clone(Products source)
+    {
+        return new Products
+        {
+            ProductID = source.ProductID,
+            ProductCode = source.ProductCode,
+            ProductName = source.ProductName,
+            ProductDescription = source.ProductDescription,
+            UnitPrice = source.UnitPrice,
+            AddedBy = source.AddedBy,
+            AddedOn = source.AddedOn,
+            ModifiedBy = source.ModifiedBy,
+            ModifiedOn = source.ModifiedOn
+        };
+    }
+}

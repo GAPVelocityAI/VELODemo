@@ -1,0 +1,47 @@
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject IOrderService OrderService
+
+<div class="access-form customer-detail-product-list card shadow-sm">
+    <div class="card-header">Customer Product Summary (@rows.Count)</div>
+    <div class="card-body table-responsive">
+        <table class="table table-sm table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Orders</th>
+                    <th>First Ordered</th>
+                    <th>Last Ordered</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in rows)
+                {
+                    <tr>
+                        <td>@row.ProductName</td>
+                        <td>@row.Quantity</td>
+                        <td>@row.OrderCount</td>
+                        <td>@row.FirstOrdered.ToShortDateString()</td>
+                        <td>@row.LastOrdered.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int CustomerID { get; set; }
+
+    private List<CustomerProductSummaryDto> rows = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var allRows = await OrderService.GetCustomerProductSummaryAsync();
+        rows = allRows
+            .Where(x => x.CustomerID == CustomerID)
+            .OrderByDescending(x => x.LastOrdered)
+            .ToList();
+    }
+}

@@ -1,0 +1,48 @@
+@page "/main-menu"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Components.Forms
+@inject NavigationManager Navigation
+
+<div class="card shadow-sm access-form access-main-menu">
+    <div class="card-header">Main Menu</div>
+    <div class="card-body">
+        <div class="btn-toolbar mb-3" role="toolbar">
+            <div class="btn-group me-2">
+                <button class="btn btn-outline-primary" tabindex="1" @onclick='() => currentView = "orders"'>Orders</button>
+                <button class="btn btn-outline-primary" tabindex="2" @onclick='() => currentView = "products"'>Products</button>
+                <button class="btn btn-outline-primary" tabindex="3" @onclick='() => currentView = "reports"'>Reports</button>
+                <button class="btn btn-outline-primary" tabindex="4" @onclick='() => currentView = "learn"'>Learn</button>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-secondary" tabindex="5" @onclick='() => Navigation.NavigateTo("/order-details")'>Add Order</button>
+                <button class="btn btn-secondary" tabindex="6" @onclick='() => Navigation.NavigateTo("/customer-list")'>Customers</button>
+                <button class="btn btn-secondary" tabindex="7" @onclick='() => Navigation.NavigateTo("/employee-detail")'>Employees</button>
+                <button class="btn btn-secondary" tabindex="8" @onclick='() => Navigation.NavigateTo("/admin")'>Admin</button>
+                <button class="btn btn-secondary" tabindex="9" @onclick='() => Navigation.NavigateTo("/northwind-features")'>Northwind Features</button>
+            </div>
+        </div>
+
+        @if (currentView == "orders")
+        {
+            <MainMenuOrderList />
+        }
+        else if (currentView == "products")
+        {
+            <MainMenuProductList />
+        }
+        else if (currentView == "reports")
+        {
+            <MainMenuReports />
+        }
+        else if (currentView == "learn")
+        {
+            <MainMenuLearn />
+        }
+    </div>
+</div>
+
+@code {
+    private string currentView = "orders";
+}

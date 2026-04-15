@@ -1,0 +1,141 @@
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject IOrderDetailService OrderDetailService
+@inject IProductService ProductService
+
+<div class="access-form order-details-subform card shadow-sm mt-3">
+    <div class="card-header">Order Line Items</div>
+    <div class="card-body">
+        <div class="table-responsive mb-3">
+            <table class="table table-sm table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Detail ID</th>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Unit Price</th>
+                        <th>Line Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in details)
+                    {
+                        <tr>
+                            <td>@row.OrderDetailID</td>
+                            <td>@row.ProductID</td>
+                            <td>@row.Quantity</td>
+                            <td>@row.UnitPrice.ToString("C")</td>
+                            <td>@(row.Quantity * row.UnitPrice).ToString("C")</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" tabindex="0" @onclick="() => EditRow(row)">Edit</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <EditForm Model="editModel" OnValidSubmit="SaveAsync">
+            <DataAnnotationsValidator />
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <label class="form-label">Product</label>
+                    <InputSelect class="form-select" tabindex="0" @bind-Value="editModel.ProductID">
+                        @foreach (var product in products)
+                        {
+                            <option value="@product.ProductID">@product.ProductName</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Quantity</label>
+                    <InputNumber class="form-control" tabindex="0" @bind-Value="editModel.Quantity" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Unit Price</label>
+                    <InputNumber class="form-control" tabindex="0" @bind-Value="editModel.UnitPrice" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100" tabindex="0">Save</button>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int OrderID { get; set; }
+
+    private List<OrderDetails> details = [];
+    private List<Products> products = [];
+    private OrderDetails editModel = new() { Quantity = 1 };
+
+    protected override async Task OnParametersSetAsync()
+    {
+        products = await ProductService.GetProductLookupAsync();
+        await LoadDetailsAsync();
+
+        if (editModel.OrderID != OrderID)
+        {
+            editModel = new OrderDetails
+            {
+                OrderID = OrderID,
+                Quantity = 1,
+                ProductID = products.FirstOrDefault()?.ProductID ?? 0
+            };
+        }
+    }
+
+    private async Task LoadDetailsAsync()
+    {
+        var allDetails = await OrderDetailService.GetOrderDetailsAsync();
+        details = allDetails
+            .Where(d => d.OrderID == OrderID)
+            .OrderBy(d => d.OrderDetailID)
+            .ToList();
+    }
+
+    private void EditRow(OrderDetails row)
+    {
+        editModel = Clone(row);
+    }
+
+    private async Task SaveAsync()
+    {
+        editModel.OrderID = OrderID;
+
+        if (editModel.OrderDetailID == 0)
+        {
+            await OrderDetailService.CreateAsync(editModel);
+        }
+        else
+        {
+            await OrderDetailService.UpdateAsync(editModel);
+        }
+
+        await LoadDetailsAsync();
+        editModel = new OrderDetails
+        {
+            OrderID = OrderID,
+            Quantity = 1,
+            ProductID = products.FirstOrDefault()?.ProductID ?? 0
+        };
+    }
+
+    private static OrderDetails Clone(OrderDetails source)
+    {
+        return new OrderDetails
+        {
+            OrderDetailID = source.OrderDetailID,
+            OrderID = source.OrderID,
+            ProductID = source.ProductID,
+            Quantity = source.Quantity,
+            UnitPrice = source.UnitPrice,
+            AddedBy = source.AddedBy,
+            AddedOn = source.AddedOn,
+            ModifiedBy = source.ModifiedBy,
+            ModifiedOn = source.ModifiedOn
+        };
+    }
+}

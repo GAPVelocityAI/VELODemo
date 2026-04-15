@@ -1,0 +1,45 @@
+@page "/customer-list"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject ICustomerService CustomerService
+
+<div class="card shadow-sm access-form access-customer-list">
+    <div class="card-header">Customer List</div>
+    <div class="card-body table-responsive">
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Primary Contact</th>
+                    <th>Website</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in customers)
+                {
+                    <tr>
+                        <td>@customer.CustomerID</td>
+                        <td>@customer.CustomerName</td>
+                        <td>@customer.BusinessAddress</td>
+                        <td>@customer.BusinessPhone</td>
+                        <td>@customer.PrimaryContact</td>
+                        <td>@customer.Website</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private List<CustomerListDto> customers = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        customers = await CustomerService.GetCustomerListAsync();
+    }
+}

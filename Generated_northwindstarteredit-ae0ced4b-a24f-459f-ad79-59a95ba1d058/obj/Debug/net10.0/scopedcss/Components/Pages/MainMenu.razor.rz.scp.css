@@ -1,0 +1,30 @@
+.access-form.access-main-menu[b-pvddq6gjbe] {
+    --access-color-7566195: rgb(115, 115, 115);
+    --access-color-12874308: rgb(68, 114, 196);
+    --access-color-15921906: rgb(242, 242, 242);
+    --access-color-4210752: rgb(64, 64, 64);
+    --access-color-6710886: rgb(102, 102, 102);
+    --access-color-12673797: rgb(5, 99, 193);
+    --access-color-14461583: rgb(143, 170, 220);
+    --access-color-15064278: rgb(214, 220, 229);
+    --access-color-4342085: rgb(69, 65, 66);
+    --access-color-62207: rgb(255, 242, 0);
+    --access-color-neg2147483633: var(--bs-body-bg);
+    --access-color-neg2147483630: var(--bs-body-color);
+    --access-color-neg2147483643: var(--bs-primary);
+    max-width: 11in;
+    margin: 0 auto;
+    font-family: "Calibri", "Segoe UI", sans-serif;
+    font-size: 11pt;
+}
+
+.access-form.access-main-menu .card-header[b-pvddq6gjbe] {
+    background-color: var(--access-color-12874308);
+    color: #fff;
+    font-family: "Calibri Light", "Calibri", "Segoe UI", sans-serif;
+}
+
+.access-form.access-main-menu[b-pvddq6gjbe],
+.access-form.access-main-menu .card[b-pvddq6gjbe] {
+    border-color: var(--access-color-15064278);
+}

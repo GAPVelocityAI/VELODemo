@@ -1,0 +1,84 @@
+@page "/orders-by-customer"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@inject ILookupService LookupService
+@inject IOrderService OrderService
+
+<div class="card shadow-sm access-form access-orders-by-customer">
+    <div class="card-header">Orders by Customer</div>
+    <div class="card-body">
+        <EditForm Model="filterModel" OnValidSubmit="ApplyFilterAsync">
+            <DataAnnotationsValidator />
+            <div class="row g-2 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Customer</label>
+                    <InputSelect class="form-select" tabindex="1" @bind-Value="filterModel.SelectedCustomerId">
+                        <option value="0">-- Select Customer --</option>
+                        @foreach (var customer in customers)
+                        {
+                            <option value="@customer.CustomerID">@customer.CustomerName</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary" tabindex="2">Load</button>
+                </div>
+            </div>
+        </EditForm>
+
+        <div class="table-responsive">
+            <table class="table table-sm table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Employee</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in orders)
+                    {
+                        <tr>
+                            <td>@order.OrderID</td>
+                            <td>@order.OrderDate.ToShortDateString()</td>
+                            <td>@order.StatusName</td>
+                            <td>@order.FullNameFNLN</td>
+                            <td>@order.OrderTotal?.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<CustomerLookupDto> customers = [];
+    private List<OrderListDto> allOrders = [];
+    private List<OrderListDto> orders = [];
+    private FilterModel filterModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        customers = await LookupService.GetCustomerLookupAsync();
+        allOrders = await OrderService.GetOrdersAsync();
+        await ApplyFilterAsync();
+    }
+
+    private Task ApplyFilterAsync()
+    {
+        orders = filterModel.SelectedCustomerId > 0
+            ? allOrders.Where(x => x.CustomerID == filterModel.SelectedCustomerId).OrderByDescending(x => x.OrderDate).ToList()
+            : [];
+
+        return Task.CompletedTask;
+    }
+
+    private sealed class FilterModel
+    {
+        public int SelectedCustomerId { get; set; }
+    }
+}

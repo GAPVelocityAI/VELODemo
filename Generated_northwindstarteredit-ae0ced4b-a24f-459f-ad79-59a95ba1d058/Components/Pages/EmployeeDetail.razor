@@ -1,0 +1,179 @@
+@page "/employee-detail"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Components.Forms
+@inject IEmployeeService EmployeeService
+
+<div class="card shadow-sm mb-3 access-form access-employee-detail">
+    <div class="card-header">Employee Detail</div>
+    <div class="card-body">
+        @if (!string.IsNullOrWhiteSpace(statusMessage))
+        {
+            <div class="alert alert-info py-2">@statusMessage</div>
+        }
+
+        <div class="table-responsive mb-3">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Job Title</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in employees)
+                    {
+                        <tr>
+                            <td>@row.EmployeeID</td>
+                            <td>@row.FirstName @row.LastName</td>
+                            <td>@row.JobTitle</td>
+                            <td>@row.EmailAddress</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" tabindex="1" @onclick="() => SelectEmployee(row)">Edit</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (selectedEmployee is not null)
+        {
+            <EditForm Model="selectedEmployee" OnValidSubmit="SaveAsync">
+                <DataAnnotationsValidator />
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <label class="form-label">First Name</label>
+                        <InputText class="form-control" tabindex="2" @bind-Value="selectedEmployee.FirstName" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Last Name</label>
+                        <InputText class="form-control" tabindex="3" @bind-Value="selectedEmployee.LastName" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Job Title</label>
+                        <InputText class="form-control" tabindex="4" @bind-Value="selectedEmployee.JobTitle" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Title</label>
+                        <InputText class="form-control" tabindex="5" @bind-Value="selectedEmployee.Title" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <InputText class="form-control" tabindex="6" @bind-Value="selectedEmployee.EmailAddress" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Primary Phone</label>
+                        <InputText class="form-control" tabindex="7" @bind-Value="selectedEmployee.PrimaryPhone" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Secondary Phone</label>
+                        <InputText class="form-control" tabindex="8" @bind-Value="selectedEmployee.SecondaryPhone" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Notes</label>
+                        <InputTextArea class="form-control" tabindex="9" @bind-Value="selectedEmployee.Notes" />
+                    </div>
+                </div>
+                <div class="mt-3 d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary" tabindex="10" @onclick="AddNew">Add Employee</button>
+                    <button type="submit" class="btn btn-primary" tabindex="11">Save</button>
+                </div>
+            </EditForm>
+        }
+    </div>
+</div>
+
+@if (selectedEmployee is not null)
+{
+    <EmployeeDetailOrderList EmployeeID="selectedEmployee.EmployeeID" />
+}
+
+@code {
+    private List<Employees> employees = [];
+    private Employees? selectedEmployee;
+    private string? statusMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync(int? selectId = null)
+    {
+        employees = await EmployeeService.GetEmployeeDetailsAsync();
+
+        if (employees.Count == 0)
+        {
+            selectedEmployee = new Employees { FirstName = string.Empty, LastName = string.Empty, JobTitle = string.Empty };
+            return;
+        }
+
+        var employee = selectId.HasValue ? employees.FirstOrDefault(x => x.EmployeeID == selectId.Value) : employees.First();
+        selectedEmployee = employee is null ? employees.First() : Clone(employee);
+    }
+
+    private void SelectEmployee(Employees row)
+    {
+        selectedEmployee = Clone(row);
+    }
+
+    private void AddNew()
+    {
+        selectedEmployee = new Employees
+        {
+            FirstName = string.Empty,
+            LastName = string.Empty,
+            JobTitle = string.Empty
+        };
+        statusMessage = "Creating a new employee.";
+    }
+
+    private async Task SaveAsync()
+    {
+        if (selectedEmployee is null)
+        {
+            return;
+        }
+
+        if (selectedEmployee.EmployeeID == 0)
+        {
+            var created = await EmployeeService.CreateAsync(selectedEmployee);
+            statusMessage = "Employee created.";
+            await LoadAsync(created.EmployeeID);
+        }
+        else
+        {
+            await EmployeeService.UpdateAsync(selectedEmployee);
+            statusMessage = "Employee updated.";
+            await LoadAsync(selectedEmployee.EmployeeID);
+        }
+    }
+
+    private static Employees Clone(Employees source)
+    {
+        return new Employees
+        {
+            EmployeeID = source.EmployeeID,
+            FirstName = source.FirstName,
+            LastName = source.LastName,
+            FullNameFNLN = source.FullNameFNLN,
+            FullNameLNFN = source.FullNameLNFN,
+            EmailAddress = source.EmailAddress,
+            JobTitle = source.JobTitle,
+            PrimaryPhone = source.PrimaryPhone,
+            SecondaryPhone = source.SecondaryPhone,
+            Title = source.Title,
+            Notes = source.Notes,
+            WindowsUserName = source.WindowsUserName,
+            AddedBy = source.AddedBy,
+            AddedOn = source.AddedOn,
+            ModifiedBy = source.ModifiedBy,
+            ModifiedOn = source.ModifiedOn
+        };
+    }
+}

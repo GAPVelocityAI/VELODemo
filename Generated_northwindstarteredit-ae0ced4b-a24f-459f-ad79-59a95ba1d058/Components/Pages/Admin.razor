@@ -1,0 +1,42 @@
+@page "/admin"
+@rendermode InteractiveServer
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Models
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Services
+@using Generated_northwindstarteredit_ae0ced4b_a24f_459f_ad79_59a95ba1d058.Components.Forms
+@inject NavigationManager Navigation
+
+<div class="card shadow-sm access-form access-admin">
+    <div class="card-header">Administration</div>
+    <div class="card-body">
+        <div class="btn-toolbar mb-3" role="toolbar">
+            <div class="btn-group me-2">
+                <button class="btn btn-outline-primary" tabindex="1" @onclick='() => currentAdminView = "system-settings"'>System Settings</button>
+                <button class="btn btn-outline-primary" tabindex="2" @onclick='() => currentAdminView = "internet-orders"'>Internet Orders</button>
+                <button class="btn btn-outline-primary" tabindex="3" @onclick='() => currentAdminView = "reset-dates"'>Reset Dates</button>
+                <button class="btn btn-outline-primary" tabindex="4" @onclick='() => currentAdminView = "delete-test-data"'>Delete Test Data</button>
+            </div>
+            <button class="btn btn-secondary" tabindex="5" @onclick='() => Navigation.NavigateTo("/about")'>About Northwind</button>
+        </div>
+
+        @if (currentAdminView == "system-settings")
+        {
+            <AdminSystemSettings />
+        }
+        else if (currentAdminView == "internet-orders")
+        {
+            <AdminInternetOrders />
+        }
+        else if (currentAdminView == "reset-dates")
+        {
+            <AdminResetDates />
+        }
+        else if (currentAdminView == "delete-test-data")
+        {
+            <AdminDeleteTestData />
+        }
+    </div>
+</div>
+
+@code {
+    private string currentAdminView = "system-settings";
+}
